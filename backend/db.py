@@ -6,7 +6,7 @@ def create_db():
     db = pymysql.connect(host='localhost',
                         port=3306,
                         user='root',
-                        passwd='rlathddl',
+                        passwd='MySQL 비밀번호',
                         db='satellite',
                         charset='utf8')
     
