@@ -6,7 +6,7 @@ def create_db():
     db = pymysql.connect(host='localhost',
                         port=3306,
                         user='root',
-                        passwd='MySQL 비밀번호',
+                        passwd='비밀번호',
                         db='satellite',
                         charset='utf8')
     
@@ -22,15 +22,16 @@ def create_db():
             PRIMARY KEY(userId)
             )ENGINE=InnoDB DEFAULT CHARSET=utf8;"""
     # image 스키마 생성
-    # 컬럼 : (imageNum, userid(fk)), title, 이미지 url
-    # shootingtime, shootingperiod, color, font 의 경우 굳이 저장할 필요 없음 
+    # 컬럼 : (userid(fk), url), title, shootingperiod, shootingtime,keyword
     create_image_table = """CREATE TABLE IF NOT EXISTS image(
-            imageNum  INT UNSIGNED NOT NULL AUTO_INCREMENT,
             userId VARCHAR(256) NOT NULL,
-            title VARCHAR(256) NOT NULL,
             url VARCHAR(256) NOT NULL,
+            title VARCHAR(256) NOT NULL,
+            shootingPeriod VARCHAR(256) NOT NULL,
+            shootingTime VARCHAR(256) NOT NULL,
+            keyword VARCHAR(256) NOT NULL,
             FOREIGN KEY(userId) REFERENCES user(userid),
-            PRIMARY KEY(imageNum, userId)
+            PRIMARY KEY(userId,url)
             )ENGINE=InnoDB DEFAULT CHARSET=utf8;"""
 
     # SQL query 실행
