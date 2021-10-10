@@ -64,7 +64,33 @@ class user_login(Resource):
 
     @user_ns.expect(login_parser)
     def post(self):
-        return "login"
+        args = join_parser.parse_args()
+        input_id = args['id']
+        input_pw = args['pw']
+
+        db = conn_db()
+        cursor= db.cursor(pymysql.cursors.DictCursor)
+        sql= "SELECT name FROM user WHERE userId = %s and userPw = %s;"
+        cursor.execute(sql,(input_id,input_pw))
+        data = cursor.fetchall()
+
+        for row in data:
+            data = row['name']
+
+        db.close()
+        if data: # 로그인 성공 
+            return jsonify({
+                "status": 201,
+                "success":True,
+                "name": data,
+                "message": "로그인 성공"
+            })
+        else: # 로그인 실패
+            return jsonify({
+                "status": 401,
+                "success":True,
+                "message": "로그인 실패"
+            })
         
 # 위성 영상 생성 및 조회 
 @image_ns.route("/api/create")
@@ -76,7 +102,7 @@ def conn_db():
     db = pymysql.connect(host='localhost',
                         port=3306,
                         user='root',
-                        passwd='mysql 비밀번호',
+                        passwd='MySQL 비밀번호',
                         db='satellite',
                         charset='utf8')
     return db
