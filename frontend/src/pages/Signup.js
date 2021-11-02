@@ -143,7 +143,7 @@ const SignUp = () => {
             <Button
               width="100"
               font="20"
-              background="#F7A29B"
+              background="#000080"
               color="#ffffff"
               marginTop="30"
               marginRight="30"
@@ -155,7 +155,7 @@ const SignUp = () => {
             <Button
               width="100"
               font="20"
-              background="#F7A29B"
+              background="#000080"
               color="#ffffff"
               marginTop="30"
               marginRight="30"

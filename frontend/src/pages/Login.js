@@ -116,7 +116,7 @@ const Login = () => {
               width="460"
               height="55"
               font="20"
-              background="#F7A29B"
+              background="#000080"
               color="#ffffff"
               marginLeft="auto"
               marginRight="auto"
