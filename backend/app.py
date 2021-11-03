@@ -11,7 +11,7 @@ image_ns = api.namespace('satellite',description = '위성 영상 데이터 API'
 #imageNum, userid, keyword, shootingtime, shootingperiod, title, color, font, url
 join_parser = reqparse.RequestParser()
 login_parser = reqparse.RequestParser()
-imageParser = reqparse.RequestParser()
+image_parser = reqparse.RequestParser()
 
 # 회원가입 
 @user_ns.route("/api/join")
@@ -93,16 +93,42 @@ class user_login(Resource):
             })
         
 # 위성 영상 생성 및 조회 
-@image_ns.route("/api/create")
+# keyword, shooting period, shooting time, title, font, latitude font, longitude font 
+@image_ns.route("/api/createImage")
 class create_image(Resource):
+    image_parser.add_argument("keyword")
+    image_parser.add_argument("shooting_period")
+    image_parser.add_argument("shooting_time")
+    image_parser.add_argument("title")
+    image_parser.add_argument("font")
+    image_parser.add_argument("latitude_font")
+    image_parser.add_argument("longitude_font")
+    
+    @image_ns.expect(image_parser)
     def post(self):
-        return "Hello world!"
+        args = image_parser.parse_args()
+        keyword = args["keyword"]
+        shooting_period = args["shooting_period"]
+        shooting_time = args["shooting_time"]
+        title = args["title"]
+        font = args["font"]
+        latitude_font = args["latitude_font"]
+        longitude_font = args["longitude_font"]
+        
+        #url = ??? 
+        return jsonify({
+                "status": 200,
+                "success":True,
+                #"url": url_list,
+                "message": "url_list"
+            })
+
 
 def conn_db():
     db = pymysql.connect(host='localhost',
                         port=3306,
                         user='root',
-                        passwd='MySQL 비밀번호',
+                        passwd='MYSQL PW',
                         db='satellite',
                         charset='utf8')
     return db
