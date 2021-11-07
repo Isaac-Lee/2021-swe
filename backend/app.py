@@ -1,5 +1,5 @@
 from os import path
-from flask import Flask, jsonify
+from flask import Flask, json, jsonify
 from flask_restx import Api, Resource, reqparse
 from flask import session 
 import pymysql
@@ -82,7 +82,7 @@ class user_login(Resource):
 
         db.close()
         if data: # 로그인 성공 
-            session['userId'] = input_id
+            session['userId'] = input_id 
             return jsonify({
                 "status": 201,
                 "success":True,
@@ -129,7 +129,8 @@ class create_image(Resource):
         latitude_font = args["latitude_font"]
         longitude_font = args["longitude_font"]
         
-        #url = ??? 
+        #url = ??? 모듈로 부터 이미지 받고 s3 bucket url 생성 
+
         return jsonify({
                 "status": 200,
                 "success":True,
@@ -183,16 +184,18 @@ class save_image(Resource):
     def get(self):
         db = conn_db()
         cursor= db.cursor(pymysql.cursors.DictCursor)
-        sql= "SELECT url,title,shootingperiod, shootingtime, keyword FROM user WHERE userId = %s"
+        sql= "SELECT url,title,shootingperiod,shootingtime,keyword FROM user WHERE userId = %s"
         cursor.execute(sql,(session['userId']))
+        data = json.dumps(cursor.fetchall())
         db.close()
-        
+       
         #url = ??? 
         return jsonify({
                 "status": 200,
                 "success":True,
+                "result": data,
                 "message": "success"
-            })
+        })
 
 def conn_db():
     db = pymysql.connect(host='localhost',
@@ -206,5 +209,6 @@ def conn_db():
 
 if __name__ == '__main__':
     create_db()
-    app.secret_key = "secret key"
+    # secret_key 생성해야 세션 생성 가능 
+    app.secret_key = 'my super secret key'.encode('utf8')
     app.run()
