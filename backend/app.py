@@ -12,6 +12,7 @@ image_ns = api.namespace('satellite',description = '위성 영상 데이터 API'
 join_parser = reqparse.RequestParser()
 login_parser = reqparse.RequestParser()
 image_parser = reqparse.RequestParser()
+save_parser = reqparse.RequestParser()
 
 # 회원가입 
 @user_ns.route("/api/join")
@@ -123,12 +124,49 @@ class create_image(Resource):
                 "message": "url_list"
             })
 
+# 전시 영상 페이지에서 저장버튼 클릭한 경우
+@image_ns.route("/api/saveImage")
+class save_image(Resource):
+
+    save_parser.add_argument("id")
+    save_parser.add_argument("url")
+    save_parser.add_argument("title")
+    save_parser.add_argument("shootingperiod")
+    save_parser.add_argument("shootingtime")
+    save_parser.add_argument("keyword")
+
+    @image_ns.expect(save_parser)
+    #(userid(fk), url), title, shootingperiod, shootingtime,keyword
+    def post(self):
+        args = save_parser.parse_args()
+        id = args["id"]
+        url = args["url"]
+        title = args["title"]
+        shootingperiod = args["shootingperiod"]
+        shootingtime = args["shootingtime"]
+        keyword = args["keyword"]
+        
+        print(id,url,keyword)
+        db = conn_db()
+        cursor= db.cursor(pymysql.cursors.DictCursor)
+        sql= "INSERT INTO image(userId,url,title,shootingPeriod,shootingTime,keyword) VALUES(%s,%s,%s,%s,%s,%s);"
+        cursor.execute(sql,(id,url,title,shootingperiod,shootingtime,keyword))
+        db.commit()
+        db.close()
+        
+        #url = ??? 
+        return jsonify({
+                "status": 200,
+                "success":True,
+                "message": "success"
+            })
+
 
 def conn_db():
     db = pymysql.connect(host='localhost',
                         port=3306,
                         user='root',
-                        passwd='MYSQL PW',
+                        passwd='mysql pw',
                         db='satellite',
                         charset='utf8')
     return db
