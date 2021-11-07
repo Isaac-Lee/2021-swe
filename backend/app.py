@@ -1,7 +1,9 @@
 from os import path
 from flask import Flask, jsonify
 from flask_restx import Api, Resource, reqparse
+from flask import session 
 import pymysql
+from werkzeug.wrappers import response
 from db import create_db
 
 app = Flask(__name__)
@@ -80,6 +82,7 @@ class user_login(Resource):
 
         db.close()
         if data: # 로그인 성공 
+            session['userId'] = input_id
             return jsonify({
                 "status": 201,
                 "success":True,
@@ -91,6 +94,16 @@ class user_login(Resource):
                 "status": 401,
                 "success":True,
                 "message": "로그인 실패"
+            })
+# 로그아웃 
+@user_ns.route("/api/logout")
+class logout(Resource):
+    def get(self):
+        session.pop('userId',None)
+        return jsonify({
+                "status": 200,
+                "success":True,
+                "message": "로그아웃 성공"
             })
         
 # 위성 영상 생성 및 조회 
@@ -161,12 +174,31 @@ class save_image(Resource):
                 "message": "success"
             })
 
+# 갤러리 조회 
+@image_ns.route("/api/showGallery")
+class save_image(Resource):
+
+    @image_ns.expect(save_parser)
+    #(userid(fk), url), title, shootingperiod, shootingtime,keyword
+    def get(self):
+        db = conn_db()
+        cursor= db.cursor(pymysql.cursors.DictCursor)
+        sql= "SELECT url,title,shootingperiod, shootingtime, keyword FROM user WHERE userId = %s"
+        cursor.execute(sql,(session['userId']))
+        db.close()
+        
+        #url = ??? 
+        return jsonify({
+                "status": 200,
+                "success":True,
+                "message": "success"
+            })
 
 def conn_db():
     db = pymysql.connect(host='localhost',
                         port=3306,
                         user='root',
-                        passwd='mysql pw',
+                        passwd='MySqlPw',
                         db='satellite',
                         charset='utf8')
     return db
@@ -174,4 +206,5 @@ def conn_db():
 
 if __name__ == '__main__':
     create_db()
+    app.secret_key = "secret key"
     app.run()
