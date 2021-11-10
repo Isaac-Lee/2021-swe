@@ -6,6 +6,7 @@ from flask import session
 import pymysql
 from werkzeug.wrappers import response
 from db import create_db
+from utils import upload_file
 
 app = Flask(__name__)
 api = Api(app)
@@ -131,12 +132,12 @@ class create_image(Resource):
         latitude_font = args["latitude_font"]
         longitude_font = args["longitude_font"]
         
-        #url = ??? 모듈로 부터 이미지 받고 s3 bucket url 생성 
+        url = upload_file("파일경로")
 
         return jsonify({
                 "status": 200,
                 "success":True,
-                #"url": url_list,
+                "url": url,
                 "message": "url_list"
             })
 
