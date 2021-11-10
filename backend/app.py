@@ -1,7 +1,10 @@
+from itertools import repeat
 from os import path
-from flask import Flask, jsonify
+from flask import Flask, json, jsonify
 from flask_restx import Api, Resource, reqparse
+from flask import session 
 import pymysql
+from werkzeug.wrappers import response
 from db import create_db
 
 app = Flask(__name__)
@@ -13,6 +16,7 @@ join_parser = reqparse.RequestParser()
 login_parser = reqparse.RequestParser()
 image_parser = reqparse.RequestParser()
 save_parser = reqparse.RequestParser()
+delete_parser = reqparse.RequestParser()
 
 # 회원가입 
 @user_ns.route("/api/join")
@@ -80,6 +84,7 @@ class user_login(Resource):
 
         db.close()
         if data: # 로그인 성공 
+            session['userId'] = input_id 
             return jsonify({
                 "status": 201,
                 "success":True,
@@ -91,6 +96,16 @@ class user_login(Resource):
                 "status": 401,
                 "success":True,
                 "message": "로그인 실패"
+            })
+# 로그아웃 
+@user_ns.route("/api/logout")
+class logout(Resource):
+    def get(self):
+        session.pop('userId',None)
+        return jsonify({
+                "status": 200,
+                "success":True,
+                "message": "로그아웃 성공"
             })
         
 # 위성 영상 생성 및 조회 
@@ -116,7 +131,8 @@ class create_image(Resource):
         latitude_font = args["latitude_font"]
         longitude_font = args["longitude_font"]
         
-        #url = ??? 
+        #url = ??? 모듈로 부터 이미지 받고 s3 bucket url 생성 
+
         return jsonify({
                 "status": 200,
                 "success":True,
@@ -128,7 +144,6 @@ class create_image(Resource):
 @image_ns.route("/api/saveImage")
 class save_image(Resource):
 
-    save_parser.add_argument("id")
     save_parser.add_argument("url")
     save_parser.add_argument("title")
     save_parser.add_argument("shootingperiod")
@@ -139,7 +154,7 @@ class save_image(Resource):
     #(userid(fk), url), title, shootingperiod, shootingtime,keyword
     def post(self):
         args = save_parser.parse_args()
-        id = args["id"]
+        id = session['userId']
         url = args["url"]
         title = args["title"]
         shootingperiod = args["shootingperiod"]
@@ -160,6 +175,53 @@ class save_image(Resource):
                 "success":True,
                 "message": "success"
             })
+# 갤러리 삭제 
+@image_ns.route("/api/deleteImage")
+class delete_image(Resource):
+    delete_parser.add_argument('url')
+
+    @image_ns.expect(delete_parser)
+    def delete(self):
+        args = delete_parser.parse_args()
+        id = session['userId']
+        url = args["url"]
+
+        db = conn_db()
+        cursor= db.cursor(pymysql.cursors.DictCursor)
+        sql= "DELETE FROM image WHERE userId=%s AND url=%s;"
+        cursor.execute(sql,(id,url))
+        db.commit()
+        db.close()
+        
+        #url = ??? 
+        return jsonify({
+                "status": 200,
+                "success":True,
+                "message": "success delete image"
+            })
+        
+
+# 갤러리 조회 
+@image_ns.route("/api/showGallery")
+class save_image(Resource):
+
+    #(userid(fk), url), title, shootingperiod, shootingtime,keyword
+    def get(self):
+        db = conn_db()
+        cursor= db.cursor(pymysql.cursors.DictCursor)
+        sql= "SELECT url,title,shootingperiod,shootingtime,keyword FROM image WHERE userId = %s"
+        cursor.execute(sql,(session['userId']))
+        data = json.dumps(cursor.fetchall())
+        db.close()
+       
+        #url = ??? 
+        return jsonify({
+                "status": 200,
+                "success":True,
+                "result": data,
+                "message": "success"
+        })
+
 
 
 def conn_db():
@@ -174,4 +236,6 @@ def conn_db():
 
 if __name__ == '__main__':
     create_db()
+    # secret_key 생성해야 세션 생성 가능 
+    app.secret_key = 'my super secret key'.encode('utf8')
     app.run()
