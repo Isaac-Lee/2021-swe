@@ -1,3 +1,4 @@
+from itertools import repeat
 from os import path
 from flask import Flask, json, jsonify
 from flask_restx import Api, Resource, reqparse
@@ -15,6 +16,7 @@ join_parser = reqparse.RequestParser()
 login_parser = reqparse.RequestParser()
 image_parser = reqparse.RequestParser()
 save_parser = reqparse.RequestParser()
+delete_parser = reqparse.RequestParser()
 
 # 회원가입 
 @user_ns.route("/api/join")
@@ -142,7 +144,6 @@ class create_image(Resource):
 @image_ns.route("/api/saveImage")
 class save_image(Resource):
 
-    save_parser.add_argument("id")
     save_parser.add_argument("url")
     save_parser.add_argument("title")
     save_parser.add_argument("shootingperiod")
@@ -153,7 +154,7 @@ class save_image(Resource):
     #(userid(fk), url), title, shootingperiod, shootingtime,keyword
     def post(self):
         args = save_parser.parse_args()
-        id = args["id"]
+        id = session['userId']
         url = args["url"]
         title = args["title"]
         shootingperiod = args["shootingperiod"]
@@ -174,17 +175,41 @@ class save_image(Resource):
                 "success":True,
                 "message": "success"
             })
+# 갤러리 삭제 
+@image_ns.route("/api/deleteImage")
+class delete_image(Resource):
+    delete_parser.add_argument('url')
+
+    @image_ns.expect(delete_parser)
+    def delete(self):
+        args = delete_parser.parse_args()
+        id = session['userId']
+        url = args["url"]
+
+        db = conn_db()
+        cursor= db.cursor(pymysql.cursors.DictCursor)
+        sql= "DELETE FROM image WHERE userId=%s AND url=%s;"
+        cursor.execute(sql,(id,url))
+        db.commit()
+        db.close()
+        
+        #url = ??? 
+        return jsonify({
+                "status": 200,
+                "success":True,
+                "message": "success delete image"
+            })
+        
 
 # 갤러리 조회 
 @image_ns.route("/api/showGallery")
 class save_image(Resource):
 
-    @image_ns.expect(save_parser)
     #(userid(fk), url), title, shootingperiod, shootingtime,keyword
     def get(self):
         db = conn_db()
         cursor= db.cursor(pymysql.cursors.DictCursor)
-        sql= "SELECT url,title,shootingperiod,shootingtime,keyword FROM user WHERE userId = %s"
+        sql= "SELECT url,title,shootingperiod,shootingtime,keyword FROM image WHERE userId = %s"
         cursor.execute(sql,(session['userId']))
         data = json.dumps(cursor.fetchall())
         db.close()
@@ -197,11 +222,13 @@ class save_image(Resource):
                 "message": "success"
         })
 
+
+
 def conn_db():
     db = pymysql.connect(host='localhost',
                         port=3306,
                         user='root',
-                        passwd='MySqlPw',
+                        passwd='mysql pw',
                         db='satellite',
                         charset='utf8')
     return db
