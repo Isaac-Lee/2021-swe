@@ -7,11 +7,17 @@ import pymysql
 from werkzeug.wrappers import response
 from db import create_db
 from utils import upload_file
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app, supports_credentials=True) # 다른 포트번호에 대한 보안 제거
 api = Api(app)
+
+
 user_ns = api.namespace('user',description = '사용자 계정 API')
 image_ns = api.namespace('satellite',description = '위성 영상 데이터 API')
+
+
 #imageNum, userid, keyword, shootingtime, shootingperiod, title, color, font, url
 join_parser = reqparse.RequestParser()
 login_parser = reqparse.RequestParser()
