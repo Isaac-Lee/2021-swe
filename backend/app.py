@@ -23,42 +23,44 @@ delete_parser = reqparse.RequestParser()
 @user_ns.route("/api/join")
 class user_join(Resource):
     join_parser.add_argument('id', type=str, help='사용자 아이디')
-    join_parser.add_argument('pw', type=str, help='사용자 비밀번호')
+    join_parser.add_argument('password', type=str, help='사용자 비밀번호')
     join_parser.add_argument('name', type=str, help='사용자 이름')
 
     @user_ns.expect(join_parser)
     def post(self):
         args = join_parser.parse_args()
         input_id = args['id']
-        input_pw = args['pw']
+        input_pw = args['password']
         input_name = args['name']
         
         db = conn_db()
         cursor= db.cursor(pymysql.cursors.DictCursor)
         sql= "SELECT userId FROM user WHERE userId = %s;"
         cursor.execute(sql,input_id)
-        data = cursor.fetchall()
+        check = cursor.fetchall()
 
-        for row in data:
-            data = row['userId']
-
-        if data:
+        for row in check:
+            check = row['userId']
+        
+        if check:
             db.close()
-            return jsonify({
+            data = {
                 "status": 409,
                 "success":False,
                 "message": "아이디 중복"
-            })
+            }
+            return jsonify(data)
         else:
             sql="INSERT INTO user (userId,userPw,name) values (%s,%s,%s)"
             cursor.execute(sql,(input_id,input_pw,input_name))
             db.commit()
             db.close()
-            return jsonify({
+            data = {
                 "status": 201,
                 "success":True,
                 "message": "회원가입 성공"
-            })
+            }
+            return jsonify(data)
             
 
 
@@ -66,48 +68,52 @@ class user_join(Resource):
 @user_ns.route("/api/login")
 class user_login(Resource):
     login_parser.add_argument('id', type=str, help='사용자 아이디')
-    login_parser.add_argument('pw', type=str, help='사용자 비밀번호')
+    login_parser.add_argument('password', type=str, help='사용자 비밀번호')
 
     @user_ns.expect(login_parser)
     def post(self):
         args = join_parser.parse_args()
         input_id = args['id']
-        input_pw = args['pw']
+        input_pw = args['password']
 
         db = conn_db()
         cursor= db.cursor(pymysql.cursors.DictCursor)
         sql= "SELECT name FROM user WHERE userId = %s and userPw = %s;"
         cursor.execute(sql,(input_id,input_pw))
-        data = cursor.fetchall()
+        check = cursor.fetchall()
 
-        for row in data:
-            data = row['name']
+        for row in check:
+            name = row['name']
 
         db.close()
-        if data: # 로그인 성공 
+        if check: # 로그인 성공 
             session['userId'] = input_id 
-            return jsonify({
+            data = {
                 "status": 201,
                 "success":True,
-                "name": data,
+                "name": name,
                 "message": "로그인 성공"
-            })
+            }
+            return jsonify(data)
         else: # 로그인 실패
-            return jsonify({
+            data = {
                 "status": 401,
                 "success":True,
                 "message": "로그인 실패"
-            })
+            }
+            return jsonify(data)
+
 # 로그아웃 
 @user_ns.route("/api/logout")
 class logout(Resource):
     def get(self):
         session.pop('userId',None)
-        return jsonify({
-                "status": 200,
-                "success":True,
-                "message": "로그아웃 성공"
-            })
+        data = {
+            "status": 200,
+            "success":True,
+            "message": "로그아웃 성공"
+        }
+        return jsonify(data)
         
 # 위성 영상 생성 및 조회 
 # keyword, shooting period, shooting time, title, font, latitude font, longitude font 
@@ -132,14 +138,14 @@ class create_image(Resource):
         latitude_font = args["latitude_font"]
         longitude_font = args["longitude_font"]
         
-        url = upload_file("파일경로")
-
-        return jsonify({
-                "status": 200,
-                "success":True,
-                "url": url,
-                "message": "url_list"
-            })
+        url = upload_file("파일경로") ## 예성이가 파일경로 줘야함 
+        data = {
+            "status": 200,
+            "success":True,
+            "url": url,
+            "message": "url_list"
+        }
+        return jsonify(data)
 
 # 전시 영상 페이지에서 저장버튼 클릭한 경우
 @image_ns.route("/api/saveImage")
@@ -171,11 +177,13 @@ class save_image(Resource):
         db.close()
         
         #url = ??? 
-        return jsonify({
-                "status": 200,
-                "success":True,
-                "message": "success"
-            })
+        data = {
+            "status": 200,
+            "success":True,
+            "message": "success"
+        }
+        return jsonify(data)
+
 # 갤러리 삭제 
 @image_ns.route("/api/deleteImage")
 class delete_image(Resource):
@@ -194,12 +202,12 @@ class delete_image(Resource):
         db.commit()
         db.close()
         
-        #url = ??? 
-        return jsonify({
-                "status": 200,
-                "success":True,
-                "message": "success delete image"
-            })
+        data = {
+            "status": 200,
+            "success":True,
+            "message": "success delete image"
+        }
+        return jsonify(data)
         
 
 # 갤러리 조회 
@@ -212,17 +220,16 @@ class save_image(Resource):
         cursor= db.cursor(pymysql.cursors.DictCursor)
         sql= "SELECT url,title,shootingperiod,shootingtime,keyword FROM image WHERE userId = %s"
         cursor.execute(sql,(session['userId']))
-        data = json.dumps(cursor.fetchall())
+        check = json.dumps(cursor.fetchall())
         db.close()
        
-        #url = ??? 
-        return jsonify({
-                "status": 200,
+        data = {
+            "status": 200,
                 "success":True,
-                "result": data,
+                "result": check,
                 "message": "success"
-        })
-
+        }
+        return jsonify(data)
 
 
 def conn_db():
