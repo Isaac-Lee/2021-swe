@@ -1,0 +1,22 @@
+.condition {
+  width: 80%;
+  height: 188px;
+  border: 2px solid black;
+}
+
+.keyword {
+  width: auto;
+  height: 50px;
+  display: flex;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: white;
+  align-items: center;
+  margin-bottom: 80px;
+  border: 1px solid black;
+}
+
+.keyword p {
+  margin-right: 20px;
+}

@@ -1,7 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
+import { useHistory } from "react-router";
 import Header from "../components/Header";
+import "./MainPage.css";
 
 const MainPage = () => {
+  const history = useHistory();
+  const [searchInfo, setSearchInfo] = useState({
+    keyword: "",
+    shooting_period: "",
+    shooting_time: "",
+    title: "",
+    font: "",
+    latitude_font: "",
+    longitude_font: "",
+  });
+
+  const onInputChange = async (e) => {
+    const { name, value } = e.target;
+    setSearchInfo({
+      ...searchInfo,
+      [name]: value,
+    });
+  };
+
   return (
     <div
       style={{
@@ -15,6 +36,19 @@ const MainPage = () => {
       <div className="nav">
         <Header />
       </div>
+      <div className="condition">
+        <div className="keyword">
+          <p>키워드 검색</p>
+          <input
+            type="text"
+            placeholder="  키워드"
+            name="keyword"
+            value={searchInfo.keyword}
+            onChange={onInputChange}
+          ></input>
+        </div>
+      </div>
+      <div className="resultImage"></div>
     </div>
   );
 };
