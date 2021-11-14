@@ -6,7 +6,7 @@ import "./MainPage.css";
 const MainPage = () => {
   const history = useHistory();
   const [searchInfo, setSearchInfo] = useState({
-    keyword: "",
+    keyword: "전층 오존",
     shooting_period: "",
     shooting_time: "",
     title: "",
@@ -15,6 +15,8 @@ const MainPage = () => {
     longitude_font: "",
   });
 
+  const keywordList = ["전층 오존", "자외선 지수", "에어로졸"];
+  const fontWeightList = ["20px", "15px", "10px"];
   const onInputChange = async (e) => {
     const { name, value } = e.target;
     setSearchInfo({
@@ -41,27 +43,72 @@ const MainPage = () => {
       <div className="condition">
         <div className="keyword">
           <p>키워드 검색</p>
+          <select
+            name="keyword"
+            onChange={onInputChange}
+            value={searchInfo.keyword}
+          >
+            {keywordList.map((item) => (
+              <option value={item} key={item}>
+                {item}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="title">
+          <p>제목 입력</p>
           <input
             type="text"
-            placeholder="  키워드"
-            name="keyword"
-            value={searchInfo.keyword}
+            placeholder="  제목"
+            name="title"
+            value={searchInfo.title}
             onChange={onInputChange}
           ></input>
         </div>
-        <div className="shootingPeriod">
-          <p>촬영 기간</p>
-          <select>
-            <option key="banana" value="banana">
-              바나나
-            </option>
-            <option key="apple" value="apple">
-              사과
-            </option>
-            <option key="orange" value="orange">
-              오렌지
-            </option>
-          </select>
+        <p id="font">폰트 크기</p>
+        <div className="font">
+          <div className="font-title">
+            <p>제목</p>
+            <select
+              name="font"
+              onChange={onInputChange}
+              value={searchInfo.font}
+            >
+              {fontWeightList.map((item) => (
+                <option value={item} key={item}>
+                  {item}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="font-latitude">
+            <p>위도</p>
+            <select
+              name="latitude_font"
+              onChange={onInputChange}
+              value={searchInfo.latitude_font}
+            >
+              {fontWeightList.map((item) => (
+                <option value={item} key={item}>
+                  {item}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="font-longitude">
+            <p>경도</p>
+            <select
+              name="longitude_font"
+              onChange={onInputChange}
+              value={searchInfo.longitude_font}
+            >
+              {fontWeightList.map((item) => (
+                <option value={item} key={item}>
+                  {item}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
       <div className="resultImage"></div>
