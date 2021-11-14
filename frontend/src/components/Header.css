@@ -16,8 +16,8 @@
 /*logo 크기 조절 css*/
 img {
   object-fit: cover;
-  width: 230px;
-  margin-left: 15px;
+  width: 110px;
+  margin-left: 80px;
 }
 
 /*Main, Signup, Login 세개의 메뉴에 대한 css*/

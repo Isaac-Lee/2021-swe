@@ -49,6 +49,20 @@ const MainPage = () => {
             onChange={onInputChange}
           ></input>
         </div>
+        <div className="shootingPeriod">
+          <p>촬영 기간</p>
+          <select>
+            <option key="banana" value="banana">
+              바나나
+            </option>
+            <option key="apple" value="apple">
+              사과
+            </option>
+            <option key="orange" value="orange">
+              오렌지
+            </option>
+          </select>
+        </div>
       </div>
       <div className="resultImage"></div>
     </div>

@@ -12,6 +12,11 @@ def create_db():
     
     # database를 사용하기 위한 cursor
     cursor= db.cursor()
+
+    #db.set_character_set('utf8')
+    cursor.execute('SET NAMES utf8;')
+    cursor.execute('SET CHARACTER SET utf8;')
+    cursor.execute('SET character_set_connection=utf8;')
     
     # user 스키마 생성 
     # 컬럼 : (userid(pk)), userpw, name 

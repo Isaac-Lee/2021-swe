@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import logo from "../logos/header-logo.PNG";
 import { Link } from "react-router-dom";
 import "./Header.css";
 import axios from "axios";
 import { USER_SERVER } from "../config";
 import { useHistory } from "react-router";
+import logo from "../logos/header-logo.PNG";
 
 const Header = () => {
   const [isAuth, setIsAuth] = useState(window.localStorage.getItem("isAuth"));
