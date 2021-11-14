@@ -7,11 +7,12 @@ import { useHistory, Link } from "react-router-dom";
 import axios from "axios";
 import { USER_SERVER } from "../config";
 import Header from "../components/Header";
-import logo from "./exlogo.PNG";
+import logo from "../logos/login-logo.PNG";
 
 const Fix = styled.div`
   background-color: #f5f6f7;
   text-align: center;
+  height: 93vh;
 `;
 
 const Wrapper = styled.div`
@@ -21,7 +22,8 @@ const Wrapper = styled.div`
   margin-left: auto;
   margin-right: auto;
   margin-top: 45px;
-  padding-bottom: 0px;
+  margin-bottom: 0;
+  padding-bottom: 0;
 `;
 
 const GrayCard = styled.div`
@@ -86,7 +88,11 @@ const Login = () => {
       <Wrapper>
         <BlankTop DesktopMargin="3" TabletMargin="3" MobileMargin="1" />
         <img
-          style={{ width: "460px", marginLeft: "auto", marginRight: "auto" }}
+          style={{
+            width: "260px",
+            marginLeft: "auto",
+            marginRight: "auto",
+          }}
           src={logo}
           alt="로고"
         />
