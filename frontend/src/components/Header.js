@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import logo from "../pages/exlogo.PNG";
+import logo from "../logos/header-logo.PNG";
 import { Link } from "react-router-dom";
 import "./Header.css";
 import axios from "axios";

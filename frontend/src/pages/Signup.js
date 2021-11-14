@@ -24,7 +24,7 @@ const Wrapper = styled.div`
 `;
 
 const LargeP = styled.div`
-  font-size: 30px;
+  font-size: 34px;
   color: "black";
   font-family: "NanumSquare";
   margin-left: auto;

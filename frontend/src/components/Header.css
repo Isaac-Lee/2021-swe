@@ -2,7 +2,7 @@
 상단에 고정, div 좌우로 붙도록 조정*/
 .nav {
   width: auto;
-  height: 80px;
+  height: 10%;
   display: flex;
   position: fixed;
   top: 0;

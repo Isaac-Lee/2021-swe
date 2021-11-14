@@ -12,17 +12,15 @@ import logo from "./exlogo.PNG";
 const Fix = styled.div`
   background-color: #f5f6f7;
   text-align: center;
-  height: 93vh;
 `;
 
 const Wrapper = styled.div`
   width: 50%;
-  padding: 30px;
   display: inline-block;
   flex-direction: column;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 55px;
+  margin-top: 45px;
   padding-bottom: 0px;
 `;
 

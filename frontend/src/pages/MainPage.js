@@ -32,10 +32,12 @@ const MainPage = () => {
         marginTop: "80px",
         zIndex: "0",
       }}
+      className="window"
     >
       <div className="nav">
         <Header />
       </div>
+      <p id="title">위성영상 전시</p>
       <div className="condition">
         <div className="keyword">
           <p>키워드 검색</p>
