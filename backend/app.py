@@ -251,5 +251,6 @@ def conn_db():
 if __name__ == '__main__':
     create_db()
     # secret_key 생성해야 세션 생성 가능 
+    app.config['SESSION_TYPE'] = 'memcached'
     app.secret_key = 'my super secret key'.encode('utf8')
     app.run()
