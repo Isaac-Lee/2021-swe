@@ -144,7 +144,10 @@ class create_image(Resource):
         latitude_font = args["latitude_font"]
         longitude_font = args["longitude_font"]
         
-        url = upload_file("파일경로") ## 예성이가 파일경로 줘야함 
+        # console print 
+        print(keyword,shooting_period,shooting_time,title)
+        
+        url = upload_file("apple.jpeg") ## 예성이가 파일경로 줘야함 
         data = {
             "status": 200,
             "success":True,
