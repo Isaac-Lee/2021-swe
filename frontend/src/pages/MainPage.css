@@ -1,0 +1,130 @@
+@font-face {
+  font-family: "yg-jalnan";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF00.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+/*위성영상 전시 글씨에 대한 css*/
+#title {
+  font-family: "yg-jalnan";
+  font-size: 50px;
+  margin-left: 10%;
+  padding-top: 50px;
+  margin-bottom: 10px;
+}
+
+/*전체 검색 조건 area*/
+.condition {
+  width: 80%;
+  height: 188px;
+  border: 2px solid black;
+  display: flex;
+  margin: 0 auto;
+}
+
+/*keyword 입력 부분 area*/
+.keyword {
+  width: auto;
+  height: 50px;
+  display: flex;
+  /*top: 0;
+  left: 0;
+  right: 0;*/
+  align-items: center;
+  margin-bottom: 80px;
+  border: 1px solid black;
+}
+
+/*keyword 입력 부분 p*/
+.keyword p {
+  margin-right: 20px;
+}
+
+/*title 입력 부분 area*/
+.title {
+  width: auto;
+  height: 50px;
+  display: flex;
+  /*top: 0;
+  left: 0;
+  right: 0;*/
+  align-items: center;
+  margin-bottom: 80px;
+  border: 1px solid black;
+}
+
+/*title 입력 부분 p*/
+.title p {
+  margin-right: 20px;
+}
+
+/*위성영상 전시 글씨에 대한 css*/
+#font {
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+/*font 전체 입력 부분 area*/
+.font {
+  width: auto;
+  border: 1px solid black;
+  display: flex;
+  height: 50px;
+  margin: 0 auto;
+}
+
+/*font > title 입력 부분 area*/
+.font-title {
+  width: auto;
+  height: 50px;
+  display: flex;
+  /*top: 0;
+  left: 0;
+  right: 0;*/
+  align-items: center;
+  margin-bottom: 80px;
+  border: 1px solid black;
+}
+
+/*font > title > p 입력 부분*/
+.font-title p {
+  margin-right: 20px;
+}
+
+/*font > latitude 입력 부분 area*/
+.font-latitude {
+  width: auto;
+  height: 50px;
+  display: flex;
+  /*top: 0;
+  left: 0;
+  right: 0;*/
+  align-items: center;
+  margin-bottom: 80px;
+  border: 1px solid black;
+}
+
+/*font > latitude > p 입력 부분*/
+.font-latitude p {
+  margin-right: 20px;
+}
+
+/*font > longitude 입력 부분 area*/
+.font-longitude {
+  width: auto;
+  height: 50px;
+  display: flex;
+  /*top: 0;
+  left: 0;
+  right: 0;*/
+  align-items: center;
+  margin-bottom: 80px;
+  border: 1px solid black;
+}
+
+/*font > longitude > p 입력 부분*/
+.font-longitude p {
+  margin-right: 20px;
+}
