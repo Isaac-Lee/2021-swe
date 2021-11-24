@@ -1,0 +1,7 @@
+keyword:
+  AC:
+    keyword_name: "대기보정"
+  SSC:
+    keyword_name: "표층해류"
+  Chl:
+    keyword_name: "대기보정"

@@ -145,12 +145,16 @@ class create_image(Resource):
         longitude_font = args["longitude_font"]
         
         # console print 
-        print(keyword,shooting_period,shooting_time,title)
-        
-        url = upload_file("apple.jpeg") ## 예성이가 파일경로 줘야함 
+        print(keyword, shooting_period, shooting_time, title)
+
+        # TODO
+        # main.py 실행하는 코드 넣기
+        # os.system("python ./map_generator/main.py **argvs") 형식으로 작성
+
+        url = upload_file("apple.jpeg") ## 예성이가 파일경로 줘야함
         data = {
             "status": 200,
-            "success":True,
+            "success": True,
             "url": url,
             "message": "url_list"
         }
@@ -176,7 +180,7 @@ class save_image(Resource):
         shootingperiod = args["shootingperiod"]
         shootingtime = args["shootingtime"]
         keyword = args["keyword"]
-        
+
         print(id,url,keyword)
         db = conn_db()
         cursor= db.cursor(pymysql.cursors.DictCursor)
@@ -184,8 +188,8 @@ class save_image(Resource):
         cursor.execute(sql,(id,url,title,shootingperiod,shootingtime,keyword))
         db.commit()
         db.close()
-        
-        #url = ??? 
+
+        #url = ???
         data = {
             "status": 200,
             "success":True,
@@ -193,7 +197,7 @@ class save_image(Resource):
         }
         return jsonify(data)
 
-# 갤러리 삭제 
+# 갤러리 삭제
 @image_ns.route("/api/deleteImage")
 class delete_image(Resource):
     delete_parser.add_argument('url')
@@ -210,16 +214,16 @@ class delete_image(Resource):
         cursor.execute(sql,(id,url))
         db.commit()
         db.close()
-        
+
         data = {
             "status": 200,
             "success":True,
             "message": "success delete image"
         }
         return jsonify(data)
-        
 
-# 갤러리 조회 
+
+# 갤러리 조회
 @image_ns.route("/api/showGallery")
 class save_image(Resource):
 
@@ -231,7 +235,7 @@ class save_image(Resource):
         cursor.execute(sql,(session['userId']))
         check = json.dumps(cursor.fetchall())
         db.close()
-       
+
         data = {
             "status": 200,
                 "success":True,
@@ -245,7 +249,7 @@ def conn_db():
     db = pymysql.connect(host='localhost',
                         port=3306,
                         user='root',
-                        passwd='mysql pw',
+                        passwd='3412',
                         db='satellite',
                         charset='utf8')
     return db
