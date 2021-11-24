@@ -3,7 +3,7 @@ import pandas as pd
 from netCDF4 import Dataset
 
 
-class NetCDF_loader(Data):
+class NetCDF_loader():
     """
 
     NetCDF
@@ -20,3 +20,4 @@ class NetCDF_loader(Data):
     def __init__(self, file_path=str):
         super().__init__()
         self.path = file_path
+        self.data = Dataset(file_path)
