@@ -8,6 +8,7 @@ from werkzeug.wrappers import response
 from db import create_db
 from utils import upload_file
 from flask_cors import CORS
+import os 
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True) # 다른 포트번호에 대한 보안 제거
@@ -149,9 +150,9 @@ class create_image(Resource):
 
         # TODO
         # main.py 실행하는 코드 넣기
-        # os.system("python ./map_generator/main.py **argvs") 형식으로 작성
+        os.system("python ./map_generator/main.py")
 
-        url = upload_file("apple.jpeg") ## 예성이가 파일경로 줘야함
+        url = upload_file("./map_generator/img/test_file.jpg") ## 예성이가 파일경로 줘야함
         data = {
             "status": 200,
             "success": True,
@@ -249,7 +250,7 @@ def conn_db():
     db = pymysql.connect(host='localhost',
                         port=3306,
                         user='root',
-                        passwd='3412',
+                        passwd='mysql pw',
                         db='satellite',
                         charset='utf8')
     return db

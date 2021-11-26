@@ -4,6 +4,8 @@ from botocore.exceptions import ClientError
 from time import localtime,strftime
 import logging
 
+from config import AWS_ACCESS_KEY, AWS_SECRET_KEY, BUCKET_NAME
+
 #S3 파일 업로드 및 url 가져오기 
 def upload_file(file_path):
 
@@ -15,7 +17,7 @@ def upload_file(file_path):
     :return: True if file was uploaded, else False
     """
     # 파일 가져올 경로 
-    file_path='./backend/apple.jpeg'
+    file_path=file_path
     # 생성한 bucket 이름 
     bucket = BUCKET_NAME
 
