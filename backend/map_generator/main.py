@@ -5,7 +5,7 @@ from matplotlib import pyplot as plt
 
 if __name__ == '__main__':
     debug = True
-    config_file_path = "config/config.yaml"
+    config_file_path = "./map_generator/config/config.yaml"
 
     print("read config")
     config_loader = ConfigLoader(file_type='yaml', file_path=config_file_path)
@@ -23,7 +23,7 @@ if __name__ == '__main__':
 
     if debug:
         print("Save image...")
-        plt.savefig("./img/%s.jpg" % result_file_name, dpi=150)
+        plt.savefig("./map_generator/img/%s.jpg" % result_file_name, dpi=150)
         plt.show()
 
     print("return image")
