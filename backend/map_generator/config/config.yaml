@@ -5,3 +5,6 @@ keyword:
     keyword_name: "표층해류"
   Chl:
     keyword_name: "대기보정"
+
+number_of_line: 2780
+pixels_per_line: 2780
