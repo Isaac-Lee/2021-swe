@@ -102,7 +102,6 @@ const MainPage = () => {
           <div className="shooting_period">
             <p>촬영 날짜</p>
             <DatePicker
-              name="shooting_period"
               locale={ko}
               dateFormat="yyyy/MM/dd"
               selected={searchInfo.shooting_period}
