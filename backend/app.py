@@ -146,13 +146,13 @@ class create_image(Resource):
         longitude_font = args["longitude_font"]
         
         # console print 
-        print(keyword, shooting_period, shooting_time, title)
+        print(keyword, shooting_period, shooting_time, title, font, latitude_font, longitude_font)
 
         # TODO
-        # main.py 실행하는 코드 넣기
-        os.system("python ./map_generator/main.py")
+        # 인자 추가해줘야함 ex) keyword, title
+        os.system(f'python ./map_generator/main.py {keyword} {shooting_period} {shooting_time} {title} {font} {latitude_font} {longitude_font}')
 
-        url = upload_file("./map_generator/img/test_file.jpg") ## 예성이가 파일경로 줘야함
+        url = upload_file(f"./map_generator/img/{keyword}_{shooting_period}_{shooting_time}_{title}_{font}.jpg")
         data = {
             "status": 200,
             "success": True,
@@ -250,7 +250,7 @@ def conn_db():
     db = pymysql.connect(host='localhost',
                         port=3306,
                         user='root',
-                        passwd='mysql pw',
+                        passwd='3412',
                         db='satellite',
                         charset='utf8')
     return db
