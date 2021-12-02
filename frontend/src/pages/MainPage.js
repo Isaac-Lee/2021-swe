@@ -102,16 +102,19 @@ const MainPage = () => {
           <div className="shooting_period">
             <p>촬영 날짜</p>
             <DatePicker
+              name="shooting_period"
               locale={ko}
               dateFormat="yyyy/MM/dd"
               selected={searchInfo.shooting_period}
-              onChange={onInputChange}
+              onChange={(date) =>
+                setSearchInfo({ ...searchInfo, shooting_period: date })
+              }
             ></DatePicker>
           </div>
           <div className="shooting_time">
             <p>촬영 시간</p>
             <select
-              name="start_time"
+              name="shooting_time_start"
               onChange={onInputChange}
               value={searchInfo.shooting_time_start}
             >
@@ -123,7 +126,7 @@ const MainPage = () => {
             </select>
             <span>~</span>
             <select
-              name="end_time"
+              name="shooting_time_end"
               onChange={onInputChange}
               value={searchInfo.shooting_time_end}
             >
