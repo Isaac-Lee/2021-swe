@@ -156,7 +156,6 @@ class create_image(Resource):
         
         images = {}
         
-        row_name = "time"
         cnt = 1 
         for i in range(start,end+1):
             if i<10:
@@ -164,7 +163,7 @@ class create_image(Resource):
             else:
                 shooting_time = str(i)+'3000'
             
-            row_name="time"+str(i)
+            row_name=str(i)
             image = {
                 "url":"",
                 "keyword": keyword,
