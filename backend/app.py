@@ -151,8 +151,8 @@ class create_image(Resource):
         time_start = shooting_time_start.split(":")[0]
         time_end = shooting_time_end.split(":")[0]
         
-        start = int(time_start)
-        end = int(time_end)
+        start = int(float(time_start))
+        end = int(float(time_end))
         
         images = {}
         

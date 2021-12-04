@@ -5,6 +5,8 @@ import DatePicker from "react-datepicker";
 import "./MainPage.css";
 import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/esm/locale";
+import { USER_SERVER } from "../config";
+import axios from "axios";
 
 const MainPage = () => {
   const history = useHistory();
@@ -54,6 +56,26 @@ const MainPage = () => {
       ...searchInfo,
       [name]: value,
     });
+    console.log(value);
+  };
+
+  const clickSearchBtn = async (e) => {
+    if (window.localStorage.getItem("isAuth") === "true") {
+      try {
+        const response = await axios.post(
+          `${USER_SERVER}/satellite/api/createImage`,
+          searchInfo
+        );
+        if (response.data.success) {
+          history.push(`/`);
+          alert("검색완료");
+        }
+      } catch (error) {
+        alert(error.response.data.message);
+      }
+    } else {
+      alert("로그인이 필요합니다.");
+    }
   };
 
   return (
@@ -73,7 +95,7 @@ const MainPage = () => {
       <p id="title">위성영상 전시</p>
       <div className="condition">
         <div className="search_btn">
-          <button>검색</button>
+          <button onClick={clickSearchBtn}>검색</button>
         </div>
         <div className="first-line">
           <div className="keyword">
@@ -184,6 +206,11 @@ const MainPage = () => {
         </div>
       </div>
       <div className="result_image"></div>
+      <div className="table">
+        <table>
+          <tr className="tr"></tr>
+        </table>
+      </div>
       <div className="save_btn">
         <button>저장</button>
       </div>
