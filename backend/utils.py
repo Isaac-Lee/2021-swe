@@ -7,7 +7,7 @@ import logging
 from config import AWS_ACCESS_KEY, AWS_SECRET_KEY, BUCKET_NAME
 
 #S3 파일 업로드 및 url 가져오기 
-def upload_file(file_path):
+def upload_file(file_path,num):
 
     """Upload a file to an S3 bucket
 
@@ -23,7 +23,7 @@ def upload_file(file_path):
 
     upload_time = strftime("%Y_%m_%d_%H:%M:%S", localtime())
     # s3 파일 객체 이름
-    object_name = upload_time+'_image'
+    object_name = upload_time+'_'+str(num)
 
     # aws region 
     location = 'ap-northeast-2'
