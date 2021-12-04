@@ -154,7 +154,7 @@ class create_image(Resource):
         start = int(float(time_start))
         end = int(float(time_end))
         
-        images = {}
+        images = []
         
         cnt = 1 
         for i in range(start,end+1):
@@ -163,23 +163,19 @@ class create_image(Resource):
             else:
                 shooting_time = str(i)+'3000'
             
-            row_name=str(i)
-            image = {
-                "url":"",
-                "keyword": keyword,
-                "shooting_period":shooting_period,
-                "shooting_time":"",
-                "keyword":keyword
-            }
-            
             #os.system(f'python ./map_generator/main.py {keyword} {shooting_period} {shooting_time} {title} {font} {latitude_font} {longitude_font}')
             #url = upload_file(f"./map_generator/img/{keyword}_{shooting_period}_{shooting_time}_{title}_{font}.jpg")
             url = upload_file(f"./map_generator/img/test_file.jpg",i) # !!!!! 모듈 실행되면 위의 2줄 주석 풀고 해당 코드 주석처리(테스트용)
-            image["url"]= url
-            image["shooting_time"] = shooting_time
-            
-            images[row_name] = image
-
+            images.append(
+            {
+                "url":url,
+                "keyword": keyword,
+                "shooting_period":shooting_period,
+                "shooting_time":shooting_time,
+                "keyword":keyword
+            }
+            )
+        
         # console print 
         print(keyword, shooting_period, shooting_time_start, shooting_time_end, title, font, latitude_font, longitude_font)
 
@@ -188,7 +184,7 @@ class create_image(Resource):
         data = {
             "status": 200,
             "success": True,
-            "data": images,
+            "images": images,
             "message": "url_list"
         }
         return jsonify(data)
