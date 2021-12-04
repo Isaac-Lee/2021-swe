@@ -9,46 +9,70 @@
 /*위성영상 전시 글씨에 대한 css*/
 #title {
   font-family: "yg-jalnan";
-  font-size: 50px;
+  font-size: 45px;
   margin-left: 10%;
   padding-top: 50px;
   margin-bottom: 10px;
 }
 
+/*input의 크기 및 폰트 사이즈*/
+input {
+  height: 20px;
+  font-size: 13px;
+}
+
+/*select의 폰트 사이즈*/
+select {
+  font-size: 13px;
+}
+
 /*전체 검색 조건 area*/
 .condition {
   width: 80%;
-  height: 188px;
-  border: 2px solid black;
-  display: flex;
+  height: auto;
+  border: 2px solid #afabab;
   margin: 0 auto;
-  font-size: 15px;
+  font-size: 13px;
+  background-color: #f5f6f7;
 }
 
-/*input의 크기*/
-input {
-  height: 20px;
+.condition p {
+  font-weight: bold;
+  color: #3b3838;
 }
 
-/*keyword 입력 부분 area*/
+/*검색 조건에서 첫번째 line*/
+.first-line {
+  width: 90%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+}
+
+/*keyword 선택 부분 p*/
+.keyword p {
+  margin-right: 20px;
+  flex: none;
+  margin-left: 20px;
+}
+
+/*keyword 선택 부분 area*/
 .keyword {
   width: auto;
   height: 50px;
   display: flex;
-  /*top: 0;
-  left: 0;
-  right: 0;*/
-  align-items: center;
-  border: 1px solid black;
-}
-
-/*keyword 입력 부분 p*/
-.keyword p {
   margin-right: 20px;
-  flex: none;
+  align-items: center;
 }
 
 .keyword select {
+  height: 25px;
+  width: 135px;
+}
+
+/*title 입력 부분 p*/
+.title p {
+  margin-right: 20px;
   flex: none;
 }
 
@@ -57,32 +81,33 @@ input {
   width: auto;
   height: 50px;
   display: flex;
-  /*top: 0;
-  left: 0;
-  right: 0;*/
   align-items: center;
-  border: 1px solid black;
-}
-
-/*title 입력 부분 p*/
-.title p {
   margin-right: 20px;
 }
 
-/*촬영날짜 입력 부분 area*/
+/*title input*/
+.title input {
+  width: 250px;
+}
+
+/*촬영날짜 선택 부분 p*/
+.shooting_period p {
+  margin-right: 20px;
+  flex: none;
+}
+
+/*촬영날짜 선택 부분 area*/
 .shooting_period {
   width: auto;
   height: 50px;
   display: flex;
-  /*top: 0;
-  left: 0;
-  right: 0;*/
   align-items: center;
-  border: 1px solid black;
+  margin-right: 20px;
 }
 
-/*촬영날짜 입력 부분 p*/
-.shooting_period p {
+/*촬영시간 입력 부분 p*/
+.shooting_time p {
+  flex: none;
   margin-right: 20px;
 }
 
@@ -91,31 +116,32 @@ input {
   width: auto;
   height: 50px;
   display: flex;
-  /*top: 0;
-  left: 0;
-  right: 0;*/
   align-items: center;
-  border: 1px solid black;
-}
-
-/*촬영시간 입력 부분 p*/
-.shooting_time p {
   margin-right: 20px;
 }
 
-/*위성영상 전시 글씨에 대한 css*/
-#font {
-  margin-bottom: 10px;
-  font-weight: bold;
+.shooting_time select {
+  height: 25px;
+  width: 70px;
 }
 
-/*font 전체 입력 부분 area*/
-.font {
-  width: auto;
-  border: 1px solid black;
-  display: flex;
+/*검색조건에서 2번째 line*/
+.second-line {
+  width: 90%;
   height: 50px;
-  margin: 0 auto;
+  display: flex;
+  align-items: center;
+}
+
+select {
+  height: 25px;
+}
+
+/*font > title > p 입력 부분*/
+.font-title p {
+  margin-right: 20px;
+  margin-left: 20px;
+  flex: none;
 }
 
 /*font > title 입력 부분 area*/
@@ -123,17 +149,14 @@ input {
   width: auto;
   height: 50px;
   display: flex;
-  /*top: 0;
-  left: 0;
-  right: 0;*/
   align-items: center;
-  border: 1px solid black;
+  margin-right: 82px;
 }
 
-/*font > title > p 입력 부분*/
-.font-title p {
+/*font > latitude > p 입력 부분*/
+.font-latitude p {
   margin-right: 20px;
-  display: flex;
+  flex: none;
 }
 
 /*font > latitude 입력 부분 area*/
@@ -141,16 +164,14 @@ input {
   width: auto;
   height: 50px;
   display: flex;
-  /*top: 0;
-  left: 0;
-  right: 0;*/
   align-items: center;
-  border: 1px solid black;
+  margin-right: 190px;
 }
 
-/*font > latitude > p 입력 부분*/
-.font-latitude p {
+/*font > longitude > p 입력 부분*/
+.font-longitude p {
   margin-right: 20px;
+  flex: none;
 }
 
 /*font > longitude 입력 부분 area*/
@@ -158,20 +179,21 @@ input {
   width: auto;
   height: 50px;
   display: flex;
-  /*top: 0;
-  left: 0;
-  right: 0;*/
   align-items: center;
-
-  border: 1px solid black;
 }
 
-/*font > longitude > p 입력 부분*/
-.font-longitude p {
-  margin-right: 20px;
+.search_btn {
+  float: right;
+  margin-top: 15px;
+  margin-right: 15px;
 }
 
-.third-line {
-  width: auto;
-  height: 120px;
+/*검색 버튼*/
+.search_btn button {
+  background-color: #000080;
+  color: white;
+  border-radius: 3px;
+  width: 70px;
+  height: 70px;
+  align-items: center;
 }

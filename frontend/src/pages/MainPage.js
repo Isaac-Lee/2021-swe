@@ -59,7 +59,7 @@ const MainPage = () => {
   return (
     <div
       style={{
-        backgroundColor: "#f5f6f7",
+        backgroundColor: "#FEFEFE",
         width: "100vw",
         minHeight: "88vh",
         marginTop: "80px",
@@ -72,6 +72,9 @@ const MainPage = () => {
       </div>
       <p id="title">위성영상 전시</p>
       <div className="condition">
+        <div className="search_btn">
+          <button>검색</button>
+        </div>
         <div className="first-line">
           <div className="keyword">
             <p>키워드 검색</p>
@@ -97,8 +100,6 @@ const MainPage = () => {
               onChange={onInputChange}
             ></input>
           </div>
-        </div>
-        <div className="second-line">
           <div className="shooting_period">
             <p>촬영 날짜</p>
             <DatePicker
@@ -137,55 +138,49 @@ const MainPage = () => {
             </select>
           </div>
         </div>
-        <div className="third-line">
-          <p id="font">폰트 크기</p>
-          <div className="font">
-            <div className="font-title">
-              <p>제목</p>
-              <select
-                name="font"
-                onChange={onInputChange}
-                value={searchInfo.font}
-              >
-                {fontWeightList.map((item) => (
-                  <option value={item} key={item}>
-                    {item}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="font-latitude">
-              <p>위도</p>
-              <select
-                name="latitude_font"
-                onChange={onInputChange}
-                value={searchInfo.latitude_font}
-              >
-                {fontWeightList.map((item) => (
-                  <option value={item} key={item}>
-                    {item}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="font-longitude">
-              <p>경도</p>
-              <select
-                name="longitude_font"
-                onChange={onInputChange}
-                value={searchInfo.longitude_font}
-              >
-                {fontWeightList.map((item) => (
-                  <option value={item} key={item}>
-                    {item}
-                  </option>
-                ))}
-              </select>
-            </div>
+        <div className="second-line">
+          <div className="font-title">
+            <p>제목 폰트 크기</p>
+            <select
+              name="font"
+              onChange={onInputChange}
+              value={searchInfo.font}
+            >
+              {fontWeightList.map((item) => (
+                <option value={item} key={item}>
+                  {item}
+                </option>
+              ))}
+            </select>
           </div>
-        </div>
-        <div className="search_btn">
-          <button>검색</button>
+          <div className="font-latitude">
+            <p>위도 폰트 크기</p>
+            <select
+              name="latitude_font"
+              onChange={onInputChange}
+              value={searchInfo.latitude_font}
+            >
+              {fontWeightList.map((item) => (
+                <option value={item} key={item}>
+                  {item}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="font-longitude">
+            <p>경도 폰트 크기</p>
+            <select
+              name="longitude_font"
+              onChange={onInputChange}
+              value={searchInfo.longitude_font}
+            >
+              {fontWeightList.map((item) => (
+                <option value={item} key={item}>
+                  {item}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
       <div className="result_image"></div>
