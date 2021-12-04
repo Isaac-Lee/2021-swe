@@ -20,6 +20,7 @@ const MainPage = () => {
     latitude_font: "",
     longitude_font: "",
   });
+  const [images, setImages] = useState([]);
 
   const keywordList = ["대기보정", "에어로졸 광학 두께", "엽록소농도"];
   const fontWeightList = ["20px", "15px", "10px"];
@@ -50,6 +51,7 @@ const MainPage = () => {
     "23:00",
     "24:00",
   ];
+
   const onInputChange = async (e) => {
     const { name, value } = e.target;
     setSearchInfo({
@@ -57,6 +59,14 @@ const MainPage = () => {
       [name]: value,
     });
     console.log(value);
+  };
+
+  const addImages = (img) => {
+    setImages({
+      ...images,
+      img,
+    });
+    console.log(img);
   };
 
   const clickSearchBtn = async (e) => {
@@ -68,10 +78,14 @@ const MainPage = () => {
         );
         if (response.data.success) {
           history.push(`/`);
-          alert("검색완료");
+          const realData = response.data.data;
+          console.log(response.data.data);
+
+          //response.data.data.map((img) => addImages(img));
+          //realData.map((img) => console.log(img));
         }
       } catch (error) {
-        alert(error.response.data.message);
+        alert(error);
       }
     } else {
       alert("로그인이 필요합니다.");
@@ -208,7 +222,7 @@ const MainPage = () => {
       <div className="result_image"></div>
       <div className="table">
         <table>
-          <tr className="tr"></tr>
+          <tbody></tbody>
         </table>
       </div>
       <div className="save_btn">
