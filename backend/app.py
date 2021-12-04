@@ -169,6 +169,7 @@ class create_image(Resource):
             images.append(
             {
                 "url":url,
+                "title":title,
                 "keyword": keyword,
                 "shooting_period":shooting_period,
                 "shooting_time":shooting_time,
