@@ -173,7 +173,6 @@ class create_image(Resource):
                 "keyword": keyword,
                 "shooting_period":shooting_period,
                 "shooting_time":shooting_time,
-                "keyword":keyword
             }
             )
         
@@ -219,7 +218,6 @@ class save_image(Resource):
         db.commit()
         db.close()
 
-        #url = ???
         data = {
             "status": 200,
             "success":True,
@@ -270,7 +268,7 @@ class save_image(Resource):
             "status": 200,
                 "success":True,
                 "result": check,
-                "message": "success"
+                "message": "show user images"
         }
         return jsonify(data)
 
@@ -279,7 +277,7 @@ def conn_db():
     db = pymysql.connect(host='localhost',
                         port=3306,
                         user='root',
-                        passwd='rlathddl',
+                        passwd='mysql pw',
                         db='satellite',
                         charset='utf8')
     return db
