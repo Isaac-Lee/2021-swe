@@ -213,29 +213,30 @@ const MainPage = () => {
           </div>
         </div>
       </div>
-      <div className="result_image">
-        {images.map((img) => (
-          <img src={img.url} key={img.url} alt="위성사진" />
-        ))}
+      <div className="save_btn">
+        <button>저장</button>
       </div>
       <div className="table">
         <table>
           <tbody>
-            <tr>
+            <tr
+              style={{
+                border: "1px solid black",
+              }}
+            >
               {images.map((img) => (
-                <td
-                  style={{
-                    border: "1px solid black",
-                  }}
-                  key={img.url}
-                ></td>
+                <td key={img.url}>
+                  <button>난버튼</button>
+                </td>
               ))}
             </tr>
           </tbody>
         </table>
       </div>
-      <div className="save_btn">
-        <button>저장</button>
+      <div className="result_image">
+        {images.map((img) => (
+          <img src={img.url} key={img.url} alt="위성사진" />
+        ))}
       </div>
     </div>
   );
