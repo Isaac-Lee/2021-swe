@@ -21,8 +21,8 @@ const MainPage = () => {
     longitude_font: "20px",
   });
   const [images, setImages] = useState([]);
-  const [imgSrc, setImgSrc] = useState(null);
   const [clickNum, setClickNum] = useState(0);
+  const [clickedImage, setClickedImage] = useState([]);
 
   const keywordList = ["대기보정", "에어로졸 광학 두께", "엽록소농도"];
   const fontWeightList = ["20px", "15px", "10px"];
@@ -74,12 +74,47 @@ const MainPage = () => {
           history.push(`/`);
           const realData = response.data.images;
           setImages(realData);
+          setClickedImage(realData[0]);
+          console.log(realData[0]);
 
           //setImgSrc(realData[{ clickNum }].url);
           //window.location.replace("/");
         }
       } catch (error) {
         alert(error);
+      }
+    } else {
+      alert("로그인이 필요합니다.");
+    }
+  };
+
+  // table 버튼 클릭시 이벤트
+  const clickTable = (index) => {
+    setClickNum(index);
+    setClickedImage(images[index]);
+    console.log(images[index]);
+    alert("버튼 클릭됨!" + index);
+  };
+
+  // 이미지 클릭했을 때 이미지의 src 불러오기
+  const hi = (e) => {
+    alert(e.target.src);
+    console.log(clickedImage);
+  };
+
+  // 저장 버튼 클릭 함수
+  const clickSaveBtn = async (e) => {
+    if (window.localStorage.getItem("isAuth") === "true") {
+      try {
+        const response = await axios.post(
+          `${USER_SERVER}/satellite/api/saveImage`,
+          clickedImage
+        );
+        if (response.data.success) {
+          alert("갤러리에 저장되었습니다.");
+        }
+      } catch (error) {
+        alert(error.response.data.message);
       }
     } else {
       alert("로그인이 필요합니다.");
@@ -214,7 +249,7 @@ const MainPage = () => {
         </div>
       </div>
       <div className="save_btn">
-        <button>저장</button>
+        <button onClick={clickSaveBtn}>저장</button>
       </div>
       <div className="table">
         <table>
@@ -224,9 +259,9 @@ const MainPage = () => {
                 border: "1px solid black",
               }}
             >
-              {images.map((img) => (
+              {images.map((img, i) => (
                 <td key={img.url}>
-                  <button>난버튼</button>
+                  <button onClick={() => clickTable(i)}>{i}</button>
                 </td>
               ))}
             </tr>
@@ -234,9 +269,13 @@ const MainPage = () => {
         </table>
       </div>
       <div className="result_image">
-        {images.map((img) => (
-          <img src={img.url} key={img.url} alt="위성사진" />
-        ))}
+        {images.length > 0 ? (
+          <>
+            <img src={images[clickNum].url} onClick={hi} alt="위성사진" />
+          </>
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );

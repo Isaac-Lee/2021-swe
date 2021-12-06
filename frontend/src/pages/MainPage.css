@@ -39,6 +39,7 @@ select {
 .condition p {
   font-weight: bold;
   color: #3b3838;
+  margin-top: 13px;
 }
 
 /*검색 조건에서 첫번째 line*/
@@ -150,7 +151,7 @@ select {
   height: 50px;
   display: flex;
   align-items: center;
-  margin-right: 82px;
+  margin-right: 84px;
 }
 
 /*font > latitude > p 입력 부분*/
@@ -165,7 +166,7 @@ select {
   height: 50px;
   display: flex;
   align-items: center;
-  margin-right: 190px;
+  margin-right: 184px;
 }
 
 /*font > longitude > p 입력 부분*/
@@ -215,9 +216,8 @@ select {
 }
 
 .table {
-  width: 70%;
-  height: 50px;
-  display: flex;
+  height: 40px;
+  margin-top: 10px;
   align-items: center;
 }
 
@@ -226,7 +226,7 @@ select {
   margin-left: 151px;
   border: 1px solid black;
   border-collapse: collapse;
-  width: 100%;
+  width: 70%;
 }
 
 tr td {
@@ -235,4 +235,10 @@ tr td {
 
 td button {
   width: 100%;
+}
+
+.result_image img {
+  width: 750px;
+  height: 680px;
+  margin-left: 25%;
 }
