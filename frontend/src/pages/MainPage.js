@@ -11,16 +11,18 @@ import axios from "axios";
 const MainPage = () => {
   const history = useHistory();
   const [searchInfo, setSearchInfo] = useState({
-    keyword: "전층 오존",
+    keyword: "대기보정",
     shooting_period: new Date(),
-    shooting_time_start: "",
-    shooting_time_end: "",
+    shooting_time_start: "00:00",
+    shooting_time_end: "00:00",
     title: "",
-    font: "",
-    latitude_font: "",
-    longitude_font: "",
+    font: "20px",
+    latitude_font: "20px",
+    longitude_font: "20px",
   });
   const [images, setImages] = useState([]);
+  const [imgSrc, setImgSrc] = useState(null);
+  const [clickNum, setClickNum] = useState(0);
 
   const keywordList = ["대기보정", "에어로졸 광학 두께", "엽록소농도"];
   const fontWeightList = ["20px", "15px", "10px"];
@@ -61,14 +63,6 @@ const MainPage = () => {
     console.log(value);
   };
 
-  const addImages = (img) => {
-    setImages({
-      ...images,
-      img,
-    });
-    console.log(img);
-  };
-
   const clickSearchBtn = async (e) => {
     if (window.localStorage.getItem("isAuth") === "true") {
       try {
@@ -78,11 +72,11 @@ const MainPage = () => {
         );
         if (response.data.success) {
           history.push(`/`);
-          const realData = response.data.data;
-          console.log(response.data.data);
+          const realData = response.data.images;
+          setImages(realData);
 
-          //response.data.data.map((img) => addImages(img));
-          //realData.map((img) => console.log(img));
+          //setImgSrc(realData[{ clickNum }].url);
+          //window.location.replace("/");
         }
       } catch (error) {
         alert(error);
@@ -219,10 +213,25 @@ const MainPage = () => {
           </div>
         </div>
       </div>
-      <div className="result_image"></div>
+      <div className="result_image">
+        {images.map((img) => (
+          <img src={img.url} key={img.url} alt="위성사진" />
+        ))}
+      </div>
       <div className="table">
         <table>
-          <tbody></tbody>
+          <tbody>
+            <tr>
+              {images.map((img) => (
+                <td
+                  style={{
+                    border: "1px solid black",
+                  }}
+                  key={img.url}
+                ></td>
+              ))}
+            </tr>
+          </tbody>
         </table>
       </div>
       <div className="save_btn">
