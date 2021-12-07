@@ -226,20 +226,23 @@ class save_image(Resource):
         return jsonify(data)
 
 # 갤러리 삭제
+# url list["aaa","bbb","ccc"]
 @image_ns.route("/api/deleteImage")
 class delete_image(Resource):
-    delete_parser.add_argument('url')
+    delete_parser.add_argument('url_list')
 
     @image_ns.expect(delete_parser)
     def delete(self):
         args = delete_parser.parse_args()
         id = session['userId']
-        url = args["url"]
-
+        url_list = args["url_list"]
+        url_list = ["test"] ## front에서 []로 와야함 
+        
         db = conn_db()
         cursor= db.cursor(pymysql.cursors.DictCursor)
-        sql= "DELETE FROM image WHERE userId=%s AND url=%s;"
-        cursor.execute(sql,(id,url))
+        for url in url_list:
+            sql= "DELETE FROM image WHERE userId=%s AND url=%s;"
+            cursor.execute(sql,(id,url))
         db.commit()
         db.close()
 
@@ -277,7 +280,7 @@ def conn_db():
     db = pymysql.connect(host='localhost',
                         port=3306,
                         user='root',
-                        passwd='mysql pw',
+                        passwd='pw',
                         db='satellite',
                         charset='utf8')
     return db
