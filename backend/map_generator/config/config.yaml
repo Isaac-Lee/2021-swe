@@ -1,10 +1,13 @@
-keyword:
+keywords:
   AC:
-    keyword_name: "대기보정"
+    keyword_name: "atmospheric correction"
+    group_name: ["geophysical_data", "RhoC"]
+    group_num: 2
+    variable_name: "RhoC_680"
   SSC:
-    keyword_name: "표층해류"
-  Chl:
-    keyword_name: "대기보정"
+    keyword_name: "sea surface current"
+  AOD:
+    keyword_name: "aerosol optical depth"
 
 number_of_line: 2780
 pixels_per_line: 2780
