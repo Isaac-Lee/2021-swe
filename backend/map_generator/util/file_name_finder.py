@@ -16,7 +16,7 @@ def find_file_name(shooting_period, shooting_time, keyword_name):
             return file
 
     pattern = f"GK2B_GOCI2_L2_{kst}****_LA_S007_{keyword_name}"
-    raise Exception('no file matched: ', pattern)
+    raise Exception(f'no file matched: {pattern}')
 
 if __name__ == '__main__':
     dir = '../data'
