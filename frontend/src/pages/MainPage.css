@@ -235,6 +235,8 @@ tr td {
 
 td button {
   width: 100%;
+  background-color: #fefefe;
+  border: 0;
 }
 
 .result_image img {

@@ -11,21 +11,22 @@ import axios from "axios";
 const MainPage = () => {
   const history = useHistory();
   const [searchInfo, setSearchInfo] = useState({
-    keyword: "대기보정",
+    keyword: "AC",
     shooting_period: new Date(),
     shooting_time_start: "00:00",
     shooting_time_end: "00:00",
     title: "untitled",
-    font: "20px",
-    latitude_font: "20px",
-    longitude_font: "20px",
+    font: "20",
+    latitude_font: "20",
+    longitude_font: "20",
   });
   const [images, setImages] = useState([]);
   const [clickNum, setClickNum] = useState(0);
   const [clickedImage, setClickedImage] = useState([]);
 
+  const keywordValue = ["AC", "AOD", "Chl"];
   const keywordList = ["대기보정", "에어로졸 광학 두께", "엽록소농도"];
-  const fontWeightList = ["20px", "15px", "10px"];
+  const fontWeightList = ["20", "15", "10"];
   const timeList = [
     "00:00",
     "01:00",
@@ -90,11 +91,12 @@ const MainPage = () => {
   };
 
   // table 버튼 클릭시 이벤트
-  const clickTable = (index) => {
+  const clickTable = (index, e) => {
+    //e.target.style.backgroundColor = "grey";
     setClickNum(index);
     setClickedImage(images[index]);
     console.log(images[index]);
-    alert("버튼 클릭됨!" + index);
+    //alert("버튼 클릭됨!" + index);
   };
 
   // 이미지 클릭했을 때 이미지의 src 불러오기
@@ -149,8 +151,8 @@ const MainPage = () => {
               onChange={onInputChange}
               value={searchInfo.keyword}
             >
-              {keywordList.map((item) => (
-                <option value={item} key={item}>
+              {keywordList.map((item, i) => (
+                <option value={keywordValue[`${i}`]} key={item}>
                   {item}
                 </option>
               ))}
@@ -170,7 +172,7 @@ const MainPage = () => {
             <p>촬영 날짜</p>
             <DatePicker
               locale={ko}
-              dateFormat="yyyy/dd/MM"
+              dateFormat="yyyy/MM/dd"
               selected={searchInfo.shooting_period}
               onChange={(date) =>
                 setSearchInfo({ ...searchInfo, shooting_period: date })
@@ -184,7 +186,7 @@ const MainPage = () => {
               onChange={onInputChange}
               value={searchInfo.shooting_time_start}
             >
-              {timeList.map((item) => (
+              {timeList.map((item, i) => (
                 <option value={item} key={item}>
                   {item}
                 </option>
@@ -261,8 +263,8 @@ const MainPage = () => {
               }}
             >
               {images.map((img, i) => (
-                <td key={img.url}>
-                  <button onClick={() => clickTable(i)}>{i}</button>
+                <td key={img.url} onClick={(e) => clickTable(i, e)}>
+                  <button>{images[`${i}`].shooting_time}</button>
                 </td>
               ))}
             </tr>
