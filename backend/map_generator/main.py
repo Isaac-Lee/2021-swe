@@ -34,7 +34,7 @@ if __name__ == '__main__':
 
     print("read data")
     data_file_name = find_file_name(shooting_period, shooting_time, keyword_name)
-    result_file_name = f'{keyword_name}_{shooting_period}_{shooting_time}_{title}_{font}'
+    result_file_name = f'{keyword_name}_{shooting_period}_{shooting_time}_{title}_{font}_{latitude_font}_{longitude_font}'
 
     # debug 용
     # data_file_name = "GK2B_GOCI2_L2_20211110_011530_LA_S007_AC"
