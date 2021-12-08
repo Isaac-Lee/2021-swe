@@ -34,15 +34,29 @@ const Gallery = () => {
   const checkBtn = (checked, id) => {
     if (checked) {
       setCheckImgs([...checkImgs, id]);
+      console.log("체크됨");
     } else {
       // 체크 해제
       setCheckImgs(checkImgs.filter((el) => el !== id));
+      console.log("체크취소");
     }
   };
 
   const clickDownloadBtn = () => {};
 
-  const clickDeleteBtn = () => {};
+  const clickDeleteBtn = async () => {
+    try {
+      const response = await axios.post(
+        `${USER_SERVER}/satellite/api/deleteImage`,
+        checkImgs
+      );
+      if (response.data.success) {
+        alert("삭제되었습니다.");
+      }
+    } catch (error) {
+      alert(error.response.data.message);
+    }
+  };
 
   return (
     <div
@@ -73,8 +87,8 @@ const Gallery = () => {
                   <input
                     type="checkbox"
                     id={img.url}
-                    onChange={() => {
-                      //checkBtn(e.currentTarget.checked, img.url);
+                    onChange={(e) => {
+                      checkBtn(e.currentTarget.checked, img.url);
                     }}
                     checked={checkImgs.includes(img.url) ? true : false}
                   />
