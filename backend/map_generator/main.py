@@ -1,4 +1,5 @@
 from loader.config_loader.config_loader import ConfigLoader
+from util.file_name_finder import find_file_name
 
 import yaml
 import sys
@@ -32,14 +33,13 @@ if __name__ == '__main__':
     units = keyword["units"]
 
     print("read data")
-
-    data_file_name = "GK2B_GOCI2_L2_"+shooting_period+"_"+shooting_time+"_LA_S007_"+keyword_name
+    data_file_name = find_file_name(shooting_period, shooting_time, keyword_name)
     result_file_name = f'{keyword_name}_{shooting_period}_{shooting_time}_{title}_{font}'
 
     # debug 용
     # data_file_name = "GK2B_GOCI2_L2_20211110_011530_LA_S007_AC"
 
-    Data = netCDF4.Dataset(f'./map_generator/data/{data_file_name}.nc')
+    Data = netCDF4.Dataset(f'./map_generator/data/{data_file_name}')
 
     group = Data.groups[group_names[0]]
     for i in range(1, group_depth):
