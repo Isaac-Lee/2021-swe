@@ -16,9 +16,9 @@ const MainPage = () => {
     shooting_time_start: "00:00",
     shooting_time_end: "00:00",
     title: "untitled",
-    font: "20px",
-    latitude_font: "20px",
-    longitude_font: "20px",
+    font: "20",
+    latitude_font: "20",
+    longitude_font: "20",
   });
   const [images, setImages] = useState([]);
   const [clickNum, setClickNum] = useState(0);
@@ -26,7 +26,7 @@ const MainPage = () => {
 
   const keywordValue = ["AC", "AOD", "Chl"];
   const keywordList = ["대기보정", "에어로졸 광학 두께", "엽록소농도"];
-  const fontWeightList = ["20px", "15px", "10px"];
+  const fontWeightList = ["20", "15", "10"];
   const timeList = [
     "00:00",
     "01:00",
@@ -172,7 +172,7 @@ const MainPage = () => {
             <p>촬영 날짜</p>
             <DatePicker
               locale={ko}
-              dateFormat="yyyy/dd/MM"
+              dateFormat="yyyy/MM/dd"
               selected={searchInfo.shooting_period}
               onChange={(date) =>
                 setSearchInfo({ ...searchInfo, shooting_period: date })
