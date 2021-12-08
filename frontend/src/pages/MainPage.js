@@ -11,7 +11,7 @@ import axios from "axios";
 const MainPage = () => {
   const history = useHistory();
   const [searchInfo, setSearchInfo] = useState({
-    keyword: "대기보정",
+    keyword: "AC",
     shooting_period: new Date(),
     shooting_time_start: "00:00",
     shooting_time_end: "00:00",
@@ -24,6 +24,7 @@ const MainPage = () => {
   const [clickNum, setClickNum] = useState(0);
   const [clickedImage, setClickedImage] = useState([]);
 
+  const keywordValue = ["AC", "AOD", "Chl"];
   const keywordList = ["대기보정", "에어로졸 광학 두께", "엽록소농도"];
   const fontWeightList = ["20px", "15px", "10px"];
   const timeList = [
@@ -150,8 +151,8 @@ const MainPage = () => {
               onChange={onInputChange}
               value={searchInfo.keyword}
             >
-              {keywordList.map((item) => (
-                <option value={item} key={item}>
+              {keywordList.map((item, i) => (
+                <option value={keywordValue[`${i}`]} key={item}>
                   {item}
                 </option>
               ))}
@@ -185,7 +186,7 @@ const MainPage = () => {
               onChange={onInputChange}
               value={searchInfo.shooting_time_start}
             >
-              {timeList.map((item) => (
+              {timeList.map((item, i) => (
                 <option value={item} key={item}>
                   {item}
                 </option>
