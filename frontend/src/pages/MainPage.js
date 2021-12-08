@@ -12,7 +12,7 @@ const MainPage = () => {
   const history = useHistory();
   const [searchInfo, setSearchInfo] = useState({
     keyword: "대기보정",
-    shooting_period: "",
+    shooting_period: new Date(),
     shooting_time_start: "00:00",
     shooting_time_end: "00:00",
     title: "untitled",
@@ -63,41 +63,26 @@ const MainPage = () => {
     console.log(value);
   };
 
-  const changeDateFormat = async () => {
-    const { changeName } = "shooting_period";
-    const { changeValue } = searchInfo.shooting_period.toLocaleDateString();
-    setSearchInfo({
-      ...searchInfo,
-      [changeName]: changeValue,
-    });
-  };
-
   // 검색버튼
   const clickSearchBtn = async (e) => {
     if (window.localStorage.getItem("isAuth") === "true") {
-      if (searchInfo.shooting_period !== "") {
-        changeDateFormat();
-        console.log(searchInfo.shooting_period);
-        try {
-          const response = await axios.post(
-            `${USER_SERVER}/satellite/api/createImage`,
-            searchInfo
-          );
-          if (response.data.success) {
-            history.push(`/`);
-            const realData = response.data.images;
-            setImages(realData);
-            setClickedImage(realData[0]);
-            console.log(realData[0]);
+      try {
+        const response = await axios.post(
+          `${USER_SERVER}/satellite/api/createImage`,
+          searchInfo
+        );
+        if (response.data.success) {
+          history.push(`/`);
+          const realData = response.data.images;
+          setImages(realData);
+          setClickedImage(realData[0]);
+          console.log(realData[0]);
 
-            //setImgSrc(realData[{ clickNum }].url);
-            //window.location.replace("/");
-          }
-        } catch (error) {
-          alert(error);
+          //setImgSrc(realData[{ clickNum }].url);
+          //window.location.replace("/");
         }
-      } else {
-        alert("촬영 날짜를 입력해주십시오.");
+      } catch (error) {
+        alert(error);
       }
     } else {
       alert("로그인이 필요합니다.");
