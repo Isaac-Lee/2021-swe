@@ -12,10 +12,10 @@ const MainPage = () => {
   const history = useHistory();
   const [searchInfo, setSearchInfo] = useState({
     keyword: "대기보정",
-    shooting_period: new Date(),
+    shooting_period: "12/01/01",
     shooting_time_start: "00:00",
     shooting_time_end: "00:00",
-    title: "",
+    title: "untitled",
     font: "20px",
     latitude_font: "20px",
     longitude_font: "20px",
