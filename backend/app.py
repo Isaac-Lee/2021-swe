@@ -155,13 +155,12 @@ class create_image(Resource):
         end = int(float(time_end))
         
         images = []
-        
-        cnt = 1 
+
         for i in range(start,end+1):
             if i<10:
-                shooting_time = '0'+str(i)+'3000'
+                shooting_time = '0'+str(i)
             else:
-                shooting_time = str(i)+'3000'
+                shooting_time = str(i)
             
             #os.system(f'python ./map_generator/main.py {keyword} {shooting_period} {shooting_time} {title} {font} {latitude_font} {longitude_font}')
             #url = upload_file(f"./map_generator/img/{keyword}_{shooting_period}_{shooting_time}_{title}_{font}.jpg")
