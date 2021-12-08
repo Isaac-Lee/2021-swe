@@ -1,3 +1,17 @@
-tr td {
+.tableArea {
+  width: 80%;
+  height: auto;
+  margin: 0 auto;
+  font-size: 13px;
+}
+
+table {
+  margin-left: 151px;
+  border: 1px solid black;
+  border-collapse: collapse;
+  width: 70%;
+}
+
+tr {
   border: 1px solid black;
 }
