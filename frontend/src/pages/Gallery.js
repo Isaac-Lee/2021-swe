@@ -73,7 +73,7 @@ const Gallery = () => {
           .delete(
             `${USER_SERVER}/satellite/api/deleteImage?url_list=${checkImgs}`
           )
-          .then((response) => history.push(`/gallery`));
+          .then((response) => window.location.reload());
         alert("삭제되었습니다");
       } catch (error) {
         alert(error.response.data.message);
