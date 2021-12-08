@@ -161,10 +161,10 @@ class create_image(Resource):
                 shooting_time = '0'+str(i)
             else:
                 shooting_time = str(i)
-            
-            #os.system(f'python ./map_generator/main.py {keyword} {shooting_period} {shooting_time} {title} {font} {latitude_font} {longitude_font}')
-            #url = upload_file(f"./map_generator/img/{keyword}_{shooting_period}_{shooting_time}_{title}_{font}.jpg")
-            url = upload_file(f"./map_generator/img/test_file.jpg",i) # !!!!! 모듈 실행되면 위의 2줄 주석 풀고 해당 코드 주석처리(테스트용)
+            print("변수확인", keyword,shooting_period,shooting_time,title,font,latitude_font,longitude_font)
+            os.system(f'python ./map_generator/main.py {keyword} {shooting_period} {shooting_time} {title} {font} {latitude_font} {longitude_font}')
+            url = upload_file(f"./map_generator/img/{keyword}_{shooting_period}_{shooting_time}_{title}_{font}.jpg")
+            #url = upload_file(f"./map_generator/img/test_file.jpg",i) # !!!!! 모듈 실행되면 위의 2줄 주석 풀고 해당 코드 주석처리(테스트용)
             images.append(
             {
                 "url":url,
@@ -279,7 +279,7 @@ def conn_db():
     db = pymysql.connect(host='localhost',
                         port=3306,
                         user='root',
-                        passwd='pw',
+                        passwd='rlathddl',
                         db='satellite',
                         charset='utf8')
     return db
