@@ -283,9 +283,9 @@ class save_image(Resource):
 
         data = {
             "status": 200,
-                "success":True,
-                "images": check,
-                "message": "show user images"
+            "success":True,
+            "images": json.loads(check),
+            "message": "show user images"
         }
         return jsonify(data)
 
@@ -294,7 +294,7 @@ def conn_db():
     db = pymysql.connect(host='localhost',
                         port=3306,
                         user='root',
-                        passwd='pw',
+                        passwd='rlathddl',
                         db='satellite',
                         charset='utf8')
     return db
