@@ -12,7 +12,7 @@ const MainPage = () => {
   const history = useHistory();
   const [searchInfo, setSearchInfo] = useState({
     keyword: "대기보정",
-    shooting_period: "12/01/01",
+    shooting_period: "",
     shooting_time_start: "00:00",
     shooting_time_end: "00:00",
     title: "untitled",
@@ -63,25 +63,41 @@ const MainPage = () => {
     console.log(value);
   };
 
+  const changeDateFormat = async () => {
+    const { changeName } = "shooting_period";
+    const { changeValue } = searchInfo.shooting_period.toLocaleDateString();
+    setSearchInfo({
+      ...searchInfo,
+      [changeName]: changeValue,
+    });
+  };
+
+  // 검색버튼
   const clickSearchBtn = async (e) => {
     if (window.localStorage.getItem("isAuth") === "true") {
-      try {
-        const response = await axios.post(
-          `${USER_SERVER}/satellite/api/createImage`,
-          searchInfo
-        );
-        if (response.data.success) {
-          history.push(`/`);
-          const realData = response.data.images;
-          setImages(realData);
-          setClickedImage(realData[0]);
-          console.log(realData[0]);
+      if (searchInfo.shooting_period !== "") {
+        changeDateFormat();
+        console.log(searchInfo.shooting_period);
+        try {
+          const response = await axios.post(
+            `${USER_SERVER}/satellite/api/createImage`,
+            searchInfo
+          );
+          if (response.data.success) {
+            history.push(`/`);
+            const realData = response.data.images;
+            setImages(realData);
+            setClickedImage(realData[0]);
+            console.log(realData[0]);
 
-          //setImgSrc(realData[{ clickNum }].url);
-          //window.location.replace("/");
+            //setImgSrc(realData[{ clickNum }].url);
+            //window.location.replace("/");
+          }
+        } catch (error) {
+          alert(error);
         }
-      } catch (error) {
-        alert(error);
+      } else {
+        alert("촬영 날짜를 입력해주십시오.");
       }
     } else {
       alert("로그인이 필요합니다.");
@@ -169,7 +185,7 @@ const MainPage = () => {
             <p>촬영 날짜</p>
             <DatePicker
               locale={ko}
-              dateFormat="yyyy/MM/dd"
+              dateFormat="yyyy/dd/MM"
               selected={searchInfo.shooting_period}
               onChange={(date) =>
                 setSearchInfo({ ...searchInfo, shooting_period: date })
