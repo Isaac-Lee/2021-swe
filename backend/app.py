@@ -162,7 +162,7 @@ class create_image(Resource):
             if i < 10:
                 shooting_time = '0'+shooting_time
         
-         '''
+            '''
             print("변수확인", keyword,shooting_period,shooting_time,title,font,latitude_font,longitude_font)
             #os.system(f'python ./map_generator/main.py {keyword} {shooting_period} {shooting_time} {title} {font} {latitude_font} {longitude_font}')
             #url = upload_file(f"./map_generator/img/{keyword}_{shooting_period}_{shooting_time}_{title}_{font}.jpg")
