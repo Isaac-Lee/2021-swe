@@ -7,6 +7,7 @@ import "./Gallery.css";
 
 const Gallery = () => {
   const [imgList, setImgList] = useState([]);
+  const [checkImgs, setCheckImgs] = useState([]);
 
   useEffect(() => {
     if (window.localStorage.getItem("isAuth") === "true") {
@@ -27,6 +28,15 @@ const Gallery = () => {
       }
     } catch (error) {
       alert(error);
+    }
+  };
+
+  const checkBtn = (checked, id) => {
+    if (checked) {
+      setCheckImgs([...checkImgs, id]);
+    } else {
+      // 체크 해제
+      setCheckImgs(checkImgs.filter((el) => el !== id));
     }
   };
 
@@ -59,7 +69,16 @@ const Gallery = () => {
           <tbody>
             {imgList.map((img, i) => (
               <tr>
-                <td className={i}></td>
+                <td className={i}>
+                  <input
+                    type="checkbox"
+                    id={img.url}
+                    onChange={() => {
+                      //checkBtn(e.currentTarget.checked, img.url);
+                    }}
+                    checked={checkImgs.includes(img.url) ? true : false}
+                  />
+                </td>
                 <td className={i}>{img.title}</td>
                 <td className={i}>{img.url}</td>
                 <td className={i}>{img.shooting_peroid}</td>

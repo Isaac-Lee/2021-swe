@@ -274,7 +274,11 @@ const MainPage = () => {
       <div className="result_image">
         {images.length > 0 ? (
           <>
-            <img src={images[clickNum].url} onClick={hi} alt="위성사진" />
+            {images[clickNum].url === null ? (
+              <></>
+            ) : (
+              <img src={images[clickNum].url} onClick={hi} alt="위성사진" />
+            )}
           </>
         ) : (
           <></>
