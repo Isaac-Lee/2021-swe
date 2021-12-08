@@ -73,6 +73,8 @@ const Login = () => {
         window.localStorage.setItem("isAuth", "true");
         history.push(`/`);
         alert("로그인 되었습니다.");
+      } else {
+        alert("로그인 실패하였습니다.");
       }
     } catch (error) {
       alert(error.response.data.message);
