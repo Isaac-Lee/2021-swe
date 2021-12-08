@@ -252,7 +252,7 @@ class delete_image(Resource):
     @image_ns.expect(delete_parser)
     def delete(self):
         args = delete_parser.parse_args()
-        id = session['userId']
+        id = userId
         url_list = args["url_list"]
         url_list = ["test"] ## front에서 []로 와야함 
         
@@ -281,7 +281,7 @@ class save_image(Resource):
         db = conn_db()
         cursor= db.cursor(pymysql.cursors.DictCursor)
         sql= "SELECT url,title,shootingperiod,shootingtime,keyword FROM image WHERE userId = %s"
-        cursor.execute(sql,(session['userId']))
+        cursor.execute(sql,userId)
         check = json.dumps(cursor.fetchall())
         db.close()
 
@@ -298,7 +298,7 @@ def conn_db():
     db = pymysql.connect(host='localhost',
                         port=3306,
                         user='root',
-                        passwd='3412',
+                        passwd='rlathddl',
                         db='satellite',
                         charset='utf8')
     return db
