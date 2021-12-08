@@ -151,7 +151,7 @@ select {
   height: 50px;
   display: flex;
   align-items: center;
-  margin-right: 84px;
+  margin-right: 98px;
 }
 
 /*font > latitude > p 입력 부분*/
@@ -166,7 +166,7 @@ select {
   height: 50px;
   display: flex;
   align-items: center;
-  margin-right: 184px;
+  margin-right: 198px;
 }
 
 /*font > longitude > p 입력 부분*/
