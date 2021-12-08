@@ -3,6 +3,7 @@ import Header from "../components/Header";
 import { USER_SERVER } from "../config";
 import axios from "axios";
 import { useHistory } from "react-router";
+import "./Gallery.css";
 
 const Gallery = () => {
   const [imgList, setImgList] = useState([]);
@@ -56,10 +57,14 @@ const Gallery = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td></td>
-              <td></td>
-            </tr>
+            {imgList.map((img, i) => (
+              <tr>
+                <td className={i}></td>
+                <td className={i}>{img.title}</td>
+                <td className={i}>{img.url}</td>
+                <td className={i}>{img.shooting_peroid}</td>
+              </tr>
+            ))}
           </tbody>
         </div>
         <div>
