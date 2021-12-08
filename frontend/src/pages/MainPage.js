@@ -263,7 +263,7 @@ const MainPage = () => {
               }}
             >
               {images.map((img, i) => (
-                <td key={img.url} onClick={(e) => clickTable(i, e)}>
+                <td key={i} onClick={(e) => clickTable(i, e)}>
                   <button>{images[`${i}`].shooting_time}</button>
                 </td>
               ))}

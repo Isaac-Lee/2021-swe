@@ -8,12 +8,14 @@ import "./Gallery.css";
 const Gallery = () => {
   const [imgList, setImgList] = useState([]);
   const [checkImgs, setCheckImgs] = useState([]);
-
+  const [sendDelete, setSendDelete] = useState({
+    url_list: checkImgs,
+  });
   useEffect(() => {
     if (window.localStorage.getItem("isAuth") === "true") {
       getImages();
     }
-  }, [imgList]);
+  }, []);
 
   const getImages = async () => {
     console.log("하이");
@@ -21,12 +23,13 @@ const Gallery = () => {
       const response = await axios.get(
         `${USER_SERVER}/satellite/api/showGallery`
       );
-      console.log(response);
+      console.log(response.data.images);
       if (response.data.success) {
         //history.push(`/`);
         const realData = response.data.images;
         setImgList(realData);
-        console.log(realData[0]);
+        console.log(typeof realData);
+        console.log(imgList);
       }
     } catch (error) {
       alert(error);
@@ -64,16 +67,25 @@ const Gallery = () => {
     }
   };
 
+  const DeleteSet = async () => {
+    setSendDelete({
+      url_list: checkImgs,
+    });
+  };
+
   const clickDeleteBtn = async () => {
     if (checkImgs.length > 0) {
       try {
-        const response = await axios.post(
-          `${USER_SERVER}/satellite/api/deleteImage`,
-          checkImgs
-        );
-        if (response.data.success) {
-          alert("삭제되었습니다.");
-        }
+        DeleteSet();
+        console.log(checkImgs);
+        console.log(sendDelete);
+        //const a = { url_list: checkImgs };
+        const request = await axios
+          .delete(
+            `${USER_SERVER}/satellite/api/deleteImage?url_list=${checkImgs}`
+          )
+          .then((response) => window.location.replace("/gallery"));
+        alert("삭제되었습니다");
       } catch (error) {
         alert(error.response.data.message);
       }
@@ -109,11 +121,11 @@ const Gallery = () => {
               <></>
             ) : (
               imgList.map((img, i) => (
-                <tr>
+                <tr key={i}>
                   <td className={i}>
                     <input
                       type="checkbox"
-                      id={img.url}
+                      id={img.urg}
                       onChange={(e) => {
                         checkBtn(e.currentTarget.checked, img.url);
                       }}
