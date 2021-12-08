@@ -13,12 +13,14 @@ const Gallery = () => {
     if (window.localStorage.getItem("isAuth") === "true") {
       getImages();
     }
-  }, []);
+  }, [imgList]);
 
   const getImages = async () => {
     console.log("하이");
     try {
-      const response = axios.get(`${USER_SERVER}/satellite/api/showGallery`);
+      const response = await axios.get(
+        `${USER_SERVER}/satellite/api/showGallery`
+      );
       console.log(response);
       if (response.data.success) {
         //history.push(`/`);
@@ -103,23 +105,27 @@ const Gallery = () => {
             </tr>
           </thead>
           <tbody>
-            {imgList.map((img, i) => (
-              <tr>
-                <td className={i}>
-                  <input
-                    type="checkbox"
-                    id={img.url}
-                    onChange={(e) => {
-                      checkBtn(e.currentTarget.checked, img.url);
-                    }}
-                    checked={checkImgs.includes(img.url) ? true : false}
-                  />
-                </td>
-                <td className={i}>{img.title}</td>
-                <td className={i}>{img.url}</td>
-                <td className={i}>{img.shooting_peroid}</td>
-              </tr>
-            ))}
+            {imgList.length < 0 ? (
+              <></>
+            ) : (
+              imgList.map((img, i) => (
+                <tr>
+                  <td className={i}>
+                    <input
+                      type="checkbox"
+                      id={img.url}
+                      onChange={(e) => {
+                        checkBtn(e.currentTarget.checked, img.url);
+                      }}
+                      checked={checkImgs.includes(img.url) ? true : false}
+                    />
+                  </td>
+                  <td className={i}>{img.title}</td>
+                  <td className={i}>{img.url}</td>
+                  <td className={i}>{img.shooting_peroid}</td>
+                </tr>
+              ))
+            )}
           </tbody>
         </div>
         <div>
