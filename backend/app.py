@@ -179,18 +179,20 @@ class create_image(Resource):
             try:
                 image_path = f"./map_generator/img/{keyword}_{shooting_period}_{shooting_time}_{title}_{font}_{latitude_font}_{longitude_font}.jpg"
                 url = upload_file(image_path, i)
-                images.append({
-                    "url": url,
-                    "title": title,
-                    "keyword": keyword,
-                    "shooting_period": shooting_period,
-                    "shooting_time": shooting_time,
-                })
+
                 # url = upload_file(f"./map_generator/img/test_file.jpg",i) # !!!!! 모듈 실행되면 위의 2줄 주석 풀고 해당 코드 주석처리(테스트용)
             except Exception as e:
                 print(e)
-                images.append(None)
+                # images.append(None)
+                url = None
 
+            images.append({
+                "url": url,
+                "title": title,
+                "keyword": keyword,
+                "shooting_period": shooting_period,
+                "shooting_time": shooting_time,
+            })
         # console print 
         print(keyword, shooting_period, shooting_time_start, shooting_time_end, title, font, latitude_font, longitude_font)
         print(images)
@@ -296,7 +298,7 @@ def conn_db():
     db = pymysql.connect(host='localhost',
                         port=3306,
                         user='root',
-                        passwd='rlathddl',
+                        passwd='3412',
                         db='satellite',
                         charset='utf8')
     return db
