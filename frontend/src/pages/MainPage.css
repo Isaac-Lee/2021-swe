@@ -9,37 +9,72 @@
 /*위성영상 전시 글씨에 대한 css*/
 #title {
   font-family: "yg-jalnan";
-  font-size: 50px;
+  font-size: 45px;
   margin-left: 10%;
   padding-top: 50px;
   margin-bottom: 10px;
 }
 
+/*input의 크기 및 폰트 사이즈*/
+input {
+  height: 20px;
+  font-size: 13px;
+}
+
+/*select의 폰트 사이즈*/
+select {
+  font-size: 13px;
+}
+
 /*전체 검색 조건 area*/
 .condition {
   width: 80%;
-  height: 188px;
-  border: 2px solid black;
-  display: flex;
+  height: auto;
+  border: 2px solid #afabab;
   margin: 0 auto;
+  font-size: 13px;
+  background-color: #f5f6f7;
 }
 
-/*keyword 입력 부분 area*/
+.condition p {
+  font-weight: bold;
+  color: #3b3838;
+  margin-top: 13px;
+}
+
+/*검색 조건에서 첫번째 line*/
+.first-line {
+  width: 90%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+}
+
+/*keyword 선택 부분 p*/
+.keyword p {
+  margin-right: 20px;
+  flex: none;
+  margin-left: 20px;
+}
+
+/*keyword 선택 부분 area*/
 .keyword {
   width: auto;
   height: 50px;
   display: flex;
-  /*top: 0;
-  left: 0;
-  right: 0;*/
+  margin-right: 20px;
   align-items: center;
-  margin-bottom: 80px;
-  border: 1px solid black;
 }
 
-/*keyword 입력 부분 p*/
-.keyword p {
+.keyword select {
+  height: 25px;
+  width: 135px;
+}
+
+/*title 입력 부분 p*/
+.title p {
   margin-right: 20px;
+  flex: none;
 }
 
 /*title 입력 부분 area*/
@@ -47,32 +82,67 @@
   width: auto;
   height: 50px;
   display: flex;
-  /*top: 0;
-  left: 0;
-  right: 0;*/
   align-items: center;
-  margin-bottom: 80px;
-  border: 1px solid black;
-}
-
-/*title 입력 부분 p*/
-.title p {
   margin-right: 20px;
 }
 
-/*위성영상 전시 글씨에 대한 css*/
-#font {
-  margin-bottom: 10px;
-  font-weight: bold;
+/*title input*/
+.title input {
+  width: 250px;
 }
 
-/*font 전체 입력 부분 area*/
-.font {
+/*촬영날짜 선택 부분 p*/
+.shooting_period p {
+  margin-right: 20px;
+  flex: none;
+}
+
+/*촬영날짜 선택 부분 area*/
+.shooting_period {
   width: auto;
-  border: 1px solid black;
-  display: flex;
   height: 50px;
-  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+}
+
+/*촬영시간 입력 부분 p*/
+.shooting_time p {
+  flex: none;
+  margin-right: 20px;
+}
+
+/*촬영시간 입력 부분 area*/
+.shooting_time {
+  width: auto;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+}
+
+.shooting_time select {
+  height: 25px;
+  width: 70px;
+}
+
+/*검색조건에서 2번째 line*/
+.second-line {
+  width: 90%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+}
+
+select {
+  height: 25px;
+}
+
+/*font > title > p 입력 부분*/
+.font-title p {
+  margin-right: 20px;
+  margin-left: 20px;
+  flex: none;
 }
 
 /*font > title 입력 부분 area*/
@@ -80,17 +150,14 @@
   width: auto;
   height: 50px;
   display: flex;
-  /*top: 0;
-  left: 0;
-  right: 0;*/
   align-items: center;
-  margin-bottom: 80px;
-  border: 1px solid black;
+  margin-right: 84px;
 }
 
-/*font > title > p 입력 부분*/
-.font-title p {
+/*font > latitude > p 입력 부분*/
+.font-latitude p {
   margin-right: 20px;
+  flex: none;
 }
 
 /*font > latitude 입력 부분 area*/
@@ -98,17 +165,14 @@
   width: auto;
   height: 50px;
   display: flex;
-  /*top: 0;
-  left: 0;
-  right: 0;*/
   align-items: center;
-  margin-bottom: 80px;
-  border: 1px solid black;
+  margin-right: 184px;
 }
 
-/*font > latitude > p 입력 부분*/
-.font-latitude p {
+/*font > longitude > p 입력 부분*/
+.font-longitude p {
   margin-right: 20px;
+  flex: none;
 }
 
 /*font > longitude 입력 부분 area*/
@@ -116,15 +180,65 @@
   width: auto;
   height: 50px;
   display: flex;
-  /*top: 0;
-  left: 0;
-  right: 0;*/
   align-items: center;
-  margin-bottom: 80px;
+}
+
+.search_btn {
+  float: right;
+  margin-top: 15px;
+  margin-right: 15px;
+}
+
+/*검색 버튼*/
+.search_btn button {
+  background-color: #000080;
+  color: white;
+  border-radius: 3px;
+  width: 70px;
+  height: 70px;
+  align-items: center;
+}
+
+.save_btn {
+  float: right;
+  margin-top: 10px;
+  margin-right: 11%;
+}
+
+.save_btn button {
+  background-color: #fefefe;
+  color: #000080;
+  border-color: #000080;
+  border-radius: 3px;
+  width: 70px;
+  height: 30px;
+  align-items: center;
+}
+
+.table {
+  height: 40px;
+  margin-top: 10px;
+  align-items: center;
+}
+
+.table table {
+  flex: none;
+  margin-left: 151px;
+  border: 1px solid black;
+  border-collapse: collapse;
+  width: 70%;
+}
+
+tr td {
   border: 1px solid black;
 }
 
-/*font > longitude > p 입력 부분*/
-.font-longitude p {
-  margin-right: 20px;
+td button {
+  width: 100%;
+}
+
+.result_image img {
+  width: 750px;
+  height: 680px;
+  margin-left: 25%;
 }

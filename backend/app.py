@@ -9,6 +9,7 @@ from db import create_db
 from utils import upload_file
 from flask_cors import CORS
 import os 
+import json 
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True) # 다른 포트번호에 대한 보안 제거
@@ -128,7 +129,8 @@ class logout(Resource):
 class create_image(Resource):
     image_parser.add_argument("keyword")
     image_parser.add_argument("shooting_period")
-    image_parser.add_argument("shooting_time")
+    image_parser.add_argument("shooting_time_start") # 15:00
+    image_parser.add_argument("shooting_time_end") # 17:00
     image_parser.add_argument("title")
     image_parser.add_argument("font")
     image_parser.add_argument("latitude_font")
@@ -139,24 +141,50 @@ class create_image(Resource):
         args = image_parser.parse_args()
         keyword = args["keyword"]
         shooting_period = args["shooting_period"]
-        shooting_time = args["shooting_time"]
+        shooting_time_start = args["shooting_time_start"]
+        shooting_time_end = args["shooting_time_end"]
         title = args["title"]
         font = args["font"]
         latitude_font = args["latitude_font"]
         longitude_font = args["longitude_font"]
         
+        time_start = shooting_time_start.split(":")[0]
+        time_end = shooting_time_end.split(":")[0]
+        
+        start = int(float(time_start))
+        end = int(float(time_end))
+        
+        images = []
+        
+        cnt = 1 
+        for i in range(start,end+1):
+            if i<10:
+                shooting_time = '0'+str(i)+'3000'
+            else:
+                shooting_time = str(i)+'3000'
+            
+            #os.system(f'python ./map_generator/main.py {keyword} {shooting_period} {shooting_time} {title} {font} {latitude_font} {longitude_font}')
+            #url = upload_file(f"./map_generator/img/{keyword}_{shooting_period}_{shooting_time}_{title}_{font}.jpg")
+            url = upload_file(f"./map_generator/img/test_file.jpg",i) # !!!!! 모듈 실행되면 위의 2줄 주석 풀고 해당 코드 주석처리(테스트용)
+            images.append(
+            {
+                "url":url,
+                "title":title,
+                "keyword": keyword,
+                "shooting_period":shooting_period,
+                "shooting_time":shooting_time,
+            }
+            )
+        
         # console print 
-        print(keyword, shooting_period, shooting_time, title, font, latitude_font, longitude_font)
+        print(keyword, shooting_period, shooting_time_start, shooting_time_end, title, font, latitude_font, longitude_font)
 
         # TODO
         # 인자 추가해줘야함 ex) keyword, title
-        os.system(f'python ./map_generator/main.py {keyword} {shooting_period} {shooting_time} {title} {font} {latitude_font} {longitude_font}')
-
-        url = upload_file(f"./map_generator/img/{keyword}_{shooting_period}_{shooting_time}_{title}_{font}.jpg")
         data = {
             "status": 200,
             "success": True,
-            "url": url,
+            "images": images,
             "message": "url_list"
         }
         return jsonify(data)
@@ -167,8 +195,8 @@ class save_image(Resource):
 
     save_parser.add_argument("url")
     save_parser.add_argument("title")
-    save_parser.add_argument("shootingperiod")
-    save_parser.add_argument("shootingtime")
+    save_parser.add_argument("shooting_period")
+    save_parser.add_argument("shooting_time")
     save_parser.add_argument("keyword")
 
     @image_ns.expect(save_parser)
@@ -178,19 +206,18 @@ class save_image(Resource):
         id = session['userId']
         url = args["url"]
         title = args["title"]
-        shootingperiod = args["shootingperiod"]
-        shootingtime = args["shootingtime"]
+        shooting_period = args["shooting_period"]
+        shooting_time = args["shooting_time"]
         keyword = args["keyword"]
 
         print(id,url,keyword)
         db = conn_db()
         cursor= db.cursor(pymysql.cursors.DictCursor)
         sql= "INSERT INTO image(userId,url,title,shootingPeriod,shootingTime,keyword) VALUES(%s,%s,%s,%s,%s,%s);"
-        cursor.execute(sql,(id,url,title,shootingperiod,shootingtime,keyword))
+        cursor.execute(sql,(id,url,title,shooting_period,shooting_time,keyword))
         db.commit()
         db.close()
 
-        #url = ???
         data = {
             "status": 200,
             "success":True,
@@ -199,20 +226,23 @@ class save_image(Resource):
         return jsonify(data)
 
 # 갤러리 삭제
+# url list["aaa","bbb","ccc"]
 @image_ns.route("/api/deleteImage")
 class delete_image(Resource):
-    delete_parser.add_argument('url')
+    delete_parser.add_argument('url_list')
 
     @image_ns.expect(delete_parser)
     def delete(self):
         args = delete_parser.parse_args()
         id = session['userId']
-        url = args["url"]
-
+        url_list = args["url_list"]
+        url_list = ["test"] ## front에서 []로 와야함 
+        
         db = conn_db()
         cursor= db.cursor(pymysql.cursors.DictCursor)
-        sql= "DELETE FROM image WHERE userId=%s AND url=%s;"
-        cursor.execute(sql,(id,url))
+        for url in url_list:
+            sql= "DELETE FROM image WHERE userId=%s AND url=%s;"
+            cursor.execute(sql,(id,url))
         db.commit()
         db.close()
 
@@ -241,7 +271,7 @@ class save_image(Resource):
             "status": 200,
                 "success":True,
                 "result": check,
-                "message": "success"
+                "message": "show user images"
         }
         return jsonify(data)
 
@@ -250,7 +280,7 @@ def conn_db():
     db = pymysql.connect(host='localhost',
                         port=3306,
                         user='root',
-                        passwd='3412',
+                        passwd='pw',
                         db='satellite',
                         charset='utf8')
     return db
