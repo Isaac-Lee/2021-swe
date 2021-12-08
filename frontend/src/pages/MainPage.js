@@ -90,11 +90,12 @@ const MainPage = () => {
   };
 
   // table 버튼 클릭시 이벤트
-  const clickTable = (index) => {
+  const clickTable = (index, e) => {
+    //e.target.style.backgroundColor = "grey";
     setClickNum(index);
     setClickedImage(images[index]);
     console.log(images[index]);
-    alert("버튼 클릭됨!" + index);
+    //alert("버튼 클릭됨!" + index);
   };
 
   // 이미지 클릭했을 때 이미지의 src 불러오기
@@ -261,8 +262,8 @@ const MainPage = () => {
               }}
             >
               {images.map((img, i) => (
-                <td key={img.url}>
-                  <button onClick={() => clickTable(i)}>{i}</button>
+                <td key={img.url} onClick={(e) => clickTable(i, e)}>
+                  <button>{images[`${i}`].shooting_time}</button>
                 </td>
               ))}
             </tr>
