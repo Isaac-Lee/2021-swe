@@ -1,10 +1,28 @@
-keyword:
+keywords:
   AC:
-    keyword_name: "대기보정"
-  SSC:
-    keyword_name: "표층해류"
+    keyword_name: "atmospheric correction"
+    group_names: ["geophysical_data", "RhoC"]
+    group_depth: 2
+    variable_name: "RhoC_680"
+    valid_min: 0.0
+    valid_max: 1.0
+    units: ""
+  AOD:
+    keyword_name: "aerosol optical depth"
+    group_names: ["geophysical_data"]
+    group_depth: 1
+    variable_name: "Aerosol_Optical_Depth"
+    valid_min: -32767.0
+    valid_max: 32767.0
+    units: ""
   Chl:
-    keyword_name: "대기보정"
+    keyword_name: "Chlorophyll"
+    group_names: ["geophysical_data"]
+    group_depth: 1
+    variable_name: "Chl"
+    valid_min: 0.0
+    valid_max: 1000.0
+    units: "mg m^-3"
 
 number_of_line: 2780
 pixels_per_line: 2780
