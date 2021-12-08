@@ -18,6 +18,7 @@ const Header = () => {
     window.localStorage.setItem("isAuth", "false");
     setIsAuth(false);
     history.push("/");
+    window.location.replace("/");
     alert("로그아웃 되었습니다.");
   };
 

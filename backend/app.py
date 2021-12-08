@@ -157,9 +157,17 @@ class create_image(Resource):
         images = []
 
         for i in range(start,end+1):
+
             shooting_time = str(i)
             if i < 10:
                 shooting_time = '0'+shooting_time
+        
+         '''
+            print("변수확인", keyword,shooting_period,shooting_time,title,font,latitude_font,longitude_font)
+            #os.system(f'python ./map_generator/main.py {keyword} {shooting_period} {shooting_time} {title} {font} {latitude_font} {longitude_font}')
+            #url = upload_file(f"./map_generator/img/{keyword}_{shooting_period}_{shooting_time}_{title}_{font}.jpg")
+            url = upload_file(f"./map_generator/img/test_file.jpg",i) # !!!!! 모듈 실행되면 위의 2줄 주석 풀고 해당 코드 주석처리(테스트용)
+            '''
 
             print("변수확인: ", keyword,shooting_period,shooting_time,title,font,latitude_font,longitude_font)
             os.system(f'python ./map_generator/main.py {keyword} {shooting_period} {shooting_time} {title} {font} {latitude_font} {longitude_font}')
@@ -177,8 +185,6 @@ class create_image(Resource):
             except Exception as e:
                 print(e)
                 images.append(None)
-
-
 
         # console print 
         print(keyword, shooting_period, shooting_time_start, shooting_time_end, title, font, latitude_font, longitude_font)

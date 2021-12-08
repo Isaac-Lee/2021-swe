@@ -12,7 +12,7 @@ const MainPage = () => {
   const history = useHistory();
   const [searchInfo, setSearchInfo] = useState({
     keyword: "대기보정",
-    shooting_period: "12/01/01",
+    shooting_period: new Date(),
     shooting_time_start: "00:00",
     shooting_time_end: "00:00",
     title: "untitled",
@@ -63,6 +63,7 @@ const MainPage = () => {
     console.log(value);
   };
 
+  // 검색버튼
   const clickSearchBtn = async (e) => {
     if (window.localStorage.getItem("isAuth") === "true") {
       try {
@@ -169,7 +170,7 @@ const MainPage = () => {
             <p>촬영 날짜</p>
             <DatePicker
               locale={ko}
-              dateFormat="yyyy/MM/dd"
+              dateFormat="yyyy/dd/MM"
               selected={searchInfo.shooting_period}
               onChange={(date) =>
                 setSearchInfo({ ...searchInfo, shooting_period: date })

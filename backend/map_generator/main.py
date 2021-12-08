@@ -62,7 +62,7 @@ if __name__ == '__main__':
     ax.xaxis.set_label_position("top")
     ax.set_xlabel(f"{title_name} unit: {units}")
 
-    print("Save image...")
+    print("save image")
     plt.savefig("./map_generator/img/%s.jpg" % result_file_name, dpi=150)
 
     print("return image")
