@@ -71,6 +71,7 @@ const Login = () => {
       const response = await axios.post(`${USER_SERVER}/user/api/login`, info);
       if (response.data.success) {
         window.localStorage.setItem("isAuth", "true");
+        window.localStorage.setItem("id", info.id);
         history.push(`/`);
         alert("로그인 되었습니다.");
       }

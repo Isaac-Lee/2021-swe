@@ -10,6 +10,7 @@ import axios from "axios";
 
 const MainPage = () => {
   const history = useHistory();
+  const userId = window.localStorage.getItem("id");
   const [searchInfo, setSearchInfo] = useState({
     keyword: "AC",
     shooting_period: new Date(),
@@ -19,6 +20,7 @@ const MainPage = () => {
     font: "20",
     latitude_font: "20",
     longitude_font: "20",
+    id: userId,
   });
   const [images, setImages] = useState([]);
   const [clickNum, setClickNum] = useState(0);

@@ -16,6 +16,7 @@ const Header = () => {
     const response = await axios.get(`${USER_SERVER}/user/api/logout`);
     console.log(response);
     window.localStorage.setItem("isAuth", "false");
+    window.localStorage.removeItem("id");
     setIsAuth(false);
     history.push("/");
     window.location.replace("/");

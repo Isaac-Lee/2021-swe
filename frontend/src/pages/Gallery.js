@@ -42,19 +42,41 @@ const Gallery = () => {
     }
   };
 
-  const clickDownloadBtn = () => {};
+  const makeATag = (url) => {
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${url}.jpg`;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout((_) => {
+      window.URL.revokeObjectURL(url);
+    }, 60000);
+    a.remove();
+  };
+
+  const clickDownloadBtn = () => {
+    if (checkImgs.length > 0) {
+      checkImgs.forEach((url) => makeATag(url));
+    } else {
+      alert("체크된 것이 없습니다.");
+    }
+  };
 
   const clickDeleteBtn = async () => {
-    try {
-      const response = await axios.post(
-        `${USER_SERVER}/satellite/api/deleteImage`,
-        checkImgs
-      );
-      if (response.data.success) {
-        alert("삭제되었습니다.");
+    if (checkImgs.length > 0) {
+      try {
+        const response = await axios.post(
+          `${USER_SERVER}/satellite/api/deleteImage`,
+          checkImgs
+        );
+        if (response.data.success) {
+          alert("삭제되었습니다.");
+        }
+      } catch (error) {
+        alert(error.response.data.message);
       }
-    } catch (error) {
-      alert(error.response.data.message);
+    } else {
+      alert("체크된 것이 없습니다.");
     }
   };
 
