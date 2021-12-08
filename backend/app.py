@@ -298,7 +298,7 @@ def conn_db():
     db = pymysql.connect(host='localhost',
                         port=3306,
                         user='root',
-                        passwd='1215',
+                        passwd='pw',
                         db='satellite',
                         charset='utf8')
     return db
