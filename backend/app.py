@@ -154,8 +154,15 @@ class create_image(Resource):
         time_start = shooting_time_start.split(":")[0]
         time_end = shooting_time_end.split(":")[0]
         
-        split_period = shooting_period.split('/')
-        shooting_period = split_period[0]+split_period[1]+split_period[2]
+        day = int(shooting_period[8:10]) + 1
+        shooting_period = shooting_period[:4]+shooting_period[5:7]
+        
+        if day < 10:
+            day = "0"+ str(day)
+        else:
+            day = str(day)
+        shooting_period+=day
+        
         start = int(float(time_start))
         end = int(float(time_end))
         
