@@ -1,9 +1,7 @@
 from itertools import repeat
-from os import path
-from re import escape
-from flask import Flask, json, jsonify
+from flask import Flask, json, session, jsonify
+import boto3
 from flask_restx import Api, Resource, reqparse
-from flask import session 
 import pymysql
 from werkzeug.wrappers import response
 from db import create_db
@@ -15,8 +13,6 @@ import json
 app = Flask(__name__)
 CORS(app, supports_credentials=True) # 다른 포트번호에 대한 보안 제거
 api = Api(app)
-
-userId = ''
 
 user_ns = api.namespace('user',description = '사용자 계정 API')
 image_ns = api.namespace('satellite',description = '위성 영상 데이터 API')
@@ -91,25 +87,25 @@ class user_login(Resource):
         sql= "SELECT name FROM user WHERE userId = %s and userPw = %s;"
         cursor.execute(sql,(input_id,input_pw))
         check = cursor.fetchall()
-
+        name = ""
         for row in check:
             name = row['name']
 
         db.close()
-        if check: # 로그인 성공 
+        if name: # 로그인 성공 
             session['userId'] = input_id 
-            userId = '%s' % escape(session['userId'])
+            session.modified = True
             data = {
                 "status": 201,
                 "success":True,
-                "id": userId,
+                "id": session['userId'],
                 "message": "로그인 성공"
             }
             return jsonify(data)
         else: # 로그인 실패
             data = {
                 "status": 401,
-                "success":True,
+                "success":False,
                 "message": "로그인 실패"
             }
             return jsonify(data)
@@ -142,6 +138,7 @@ class create_image(Resource):
     @image_ns.expect(image_parser)
     def post(self):
         args = image_parser.parse_args()
+        id = session.get('userId')
         keyword = args["keyword"]
         shooting_period = args["shooting_period"]
         shooting_time_start = args["shooting_time_start"]
@@ -187,6 +184,7 @@ class create_image(Resource):
                 url = None
 
             images.append({
+                "id":id,
                 "url": url,
                 "title": title,
                 "keyword": keyword,
@@ -210,7 +208,6 @@ class create_image(Resource):
 # 전시 영상 페이지에서 저장버튼 클릭한 경우
 @image_ns.route("/api/saveImage")
 class save_image(Resource):
-
     save_parser.add_argument("url")
     save_parser.add_argument("title")
     save_parser.add_argument("shooting_period")
@@ -218,10 +215,9 @@ class save_image(Resource):
     save_parser.add_argument("keyword")
 
     @image_ns.expect(save_parser)
-    #(userid(fk), url), title, shootingperiod, shootingtime,keyword
     def post(self):
         args = save_parser.parse_args()
-        id = userId
+        id = "song"
         url = args["url"]
         title = args["title"]
         shooting_period = args["shooting_period"]
@@ -252,7 +248,7 @@ class delete_image(Resource):
     @image_ns.expect(delete_parser)
     def delete(self):
         args = delete_parser.parse_args()
-        id = userId
+        id = session.get('userId')
         url_list = args["url_list"]
         url_list = ["test"] ## front에서 []로 와야함 
         
@@ -281,14 +277,14 @@ class save_image(Resource):
         db = conn_db()
         cursor= db.cursor(pymysql.cursors.DictCursor)
         sql= "SELECT url,title,shootingperiod,shootingtime,keyword FROM image WHERE userId = %s"
-        cursor.execute(sql,userId)
+        cursor.execute(sql,"song")
         check = json.dumps(cursor.fetchall())
         db.close()
 
         data = {
             "status": 200,
                 "success":True,
-                "result": check,
+                "images": check,
                 "message": "show user images"
         }
         return jsonify(data)
@@ -307,6 +303,6 @@ def conn_db():
 if __name__ == '__main__':
     create_db()
     # secret_key 생성해야 세션 생성 가능 
-    app.config['SESSION_TYPE'] = 'memcached'
+    app.config['SESSION_TYPE'] = 'filesystem'
     app.secret_key = 'my super secret key'.encode('utf8')
     app.run()
