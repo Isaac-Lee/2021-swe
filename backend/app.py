@@ -248,13 +248,17 @@ class delete_image(Resource):
     @image_ns.expect(delete_parser)
     def delete(self):
         args = delete_parser.parse_args()
-        id = session.get('userId')
+        id = "song"
         url_list = args["url_list"]
-        url_list = ["test"] ## front에서 []로 와야함 
-        
+        #url_list = ["test"] ## front에서 []로 와야함 
+        result_url = []
+        urls = url_list.split(',')
+        for url in urls:
+            result_url.append(url)
+            
         db = conn_db()
         cursor= db.cursor(pymysql.cursors.DictCursor)
-        for url in url_list:
+        for url in result_url:
             sql= "DELETE FROM image WHERE userId=%s AND url=%s;"
             cursor.execute(sql,(id,url))
         db.commit()
