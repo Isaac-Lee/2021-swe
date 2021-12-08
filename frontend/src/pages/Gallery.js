@@ -6,11 +6,9 @@ import { useHistory } from "react-router";
 import "./Gallery.css";
 
 const Gallery = () => {
+  const history = useHistory();
   const [imgList, setImgList] = useState([]);
   const [checkImgs, setCheckImgs] = useState([]);
-  const [sendDelete, setSendDelete] = useState({
-    url_list: checkImgs,
-  });
   useEffect(() => {
     if (window.localStorage.getItem("isAuth") === "true") {
       getImages();
@@ -67,24 +65,15 @@ const Gallery = () => {
     }
   };
 
-  const DeleteSet = async () => {
-    setSendDelete({
-      url_list: checkImgs,
-    });
-  };
-
   const clickDeleteBtn = async () => {
     if (checkImgs.length > 0) {
       try {
-        DeleteSet();
         console.log(checkImgs);
-        console.log(sendDelete);
-        //const a = { url_list: checkImgs };
         const request = await axios
           .delete(
             `${USER_SERVER}/satellite/api/deleteImage?url_list=${checkImgs}`
           )
-          .then((response) => window.location.replace("/gallery"));
+          .then((response) => history.push(`/gallery`));
         alert("삭제되었습니다");
       } catch (error) {
         alert(error.response.data.message);
