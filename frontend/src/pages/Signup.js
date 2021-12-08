@@ -88,7 +88,7 @@ const SignUp = () => {
       const response = await axios.post(`${USER_SERVER}/user/api/join`, data);
       console.log(response);
       if (response.data.success) {
-        history.push(`/`);
+        history.push(`/login`);
         alert("회원가입 되었습니다.");
       }
     } catch (error) {

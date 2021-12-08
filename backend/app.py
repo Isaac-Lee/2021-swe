@@ -1,5 +1,6 @@
 from itertools import repeat
 from os import path
+from re import escape
 from flask import Flask, json, jsonify
 from flask_restx import Api, Resource, reqparse
 from flask import session 
@@ -15,6 +16,7 @@ app = Flask(__name__)
 CORS(app, supports_credentials=True) # 다른 포트번호에 대한 보안 제거
 api = Api(app)
 
+userId = ''
 
 user_ns = api.namespace('user',description = '사용자 계정 API')
 image_ns = api.namespace('satellite',description = '위성 영상 데이터 API')
@@ -96,10 +98,11 @@ class user_login(Resource):
         db.close()
         if check: # 로그인 성공 
             session['userId'] = input_id 
+            userId = '%s' % escape(session['userId'])
             data = {
                 "status": 201,
                 "success":True,
-                "name": name,
+                "id": userId,
                 "message": "로그인 성공"
             }
             return jsonify(data)
@@ -151,6 +154,8 @@ class create_image(Resource):
         time_start = shooting_time_start.split(":")[0]
         time_end = shooting_time_end.split(":")[0]
         
+        split_period = shooting_period.split('/')
+        shooting_period = split_period[0]+split_period[1]+split_period[2]
         start = int(float(time_start))
         end = int(float(time_end))
         
@@ -161,13 +166,6 @@ class create_image(Resource):
             shooting_time = str(i)
             if i < 10:
                 shooting_time = '0'+shooting_time
-        
-            '''
-            print("변수확인", keyword,shooting_period,shooting_time,title,font,latitude_font,longitude_font)
-            #os.system(f'python ./map_generator/main.py {keyword} {shooting_period} {shooting_time} {title} {font} {latitude_font} {longitude_font}')
-            #url = upload_file(f"./map_generator/img/{keyword}_{shooting_period}_{shooting_time}_{title}_{font}.jpg")
-            url = upload_file(f"./map_generator/img/test_file.jpg",i) # !!!!! 모듈 실행되면 위의 2줄 주석 풀고 해당 코드 주석처리(테스트용)
-            '''
 
             print("변수확인: ", keyword,shooting_period,shooting_time,title,font,latitude_font,longitude_font)
             os.system(f'python ./map_generator/main.py {keyword} {shooting_period} {shooting_time} {title} {font} {latitude_font} {longitude_font}')
@@ -216,7 +214,7 @@ class save_image(Resource):
     #(userid(fk), url), title, shootingperiod, shootingtime,keyword
     def post(self):
         args = save_parser.parse_args()
-        id = session['userId']
+        id = userId
         url = args["url"]
         title = args["title"]
         shooting_period = args["shooting_period"]
