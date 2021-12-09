@@ -7,6 +7,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/esm/locale";
 import { USER_SERVER } from "../config";
 import axios from "axios";
+import Loader from "./Loader";
 
 const MainPage = () => {
   const history = useHistory();
@@ -24,6 +25,7 @@ const MainPage = () => {
   const [clickNum, setClickNum] = useState(0);
   const [clickedImage, setClickedImage] = useState([]);
   const [isSearch, setIsSearch] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const keywordValue = ["AC", "AOD", "Chl"];
   const keywordList = ["대기보정", "에어로졸 광학 두께", "엽록소농도"];
@@ -68,6 +70,7 @@ const MainPage = () => {
   // 검색버튼
   const clickSearchBtn = async (e) => {
     if (window.localStorage.getItem("isAuth") === "true") {
+      setLoading(true);
       setIsSearch(true);
       try {
         const response = await axios.post(
@@ -75,11 +78,13 @@ const MainPage = () => {
           searchInfo
         );
         if (response.data.success) {
+          setLoading(false);
           history.push(`/`);
           const realData = response.data.images;
           setImages(realData);
           setClickedImage(realData[0]);
           console.log(realData[0]);
+          console.log(isSearch);
 
           //setImgSrc(realData[{ clickNum }].url);
           //window.location.replace("/");
@@ -110,17 +115,21 @@ const MainPage = () => {
   // 저장 버튼 클릭 함수
   const clickSaveBtn = async (e) => {
     if (window.localStorage.getItem("isAuth") === "true") {
-      if (isSearch === "true") {
-        try {
-          const response = await axios.post(
-            `${USER_SERVER}/satellite/api/saveImage`,
-            clickedImage
-          );
-          if (response.data.success) {
-            alert("갤러리에 저장되었습니다.");
+      if (isSearch === true) {
+        if (clickedImage.url === null) {
+          alert("빈 영상은 저장이 불가능합니다.");
+        } else {
+          try {
+            const response = await axios.post(
+              `${USER_SERVER}/satellite/api/saveImage`,
+              clickedImage
+            );
+            if (response.data.success) {
+              alert("갤러리에 저장되었습니다.");
+            }
+          } catch (error) {
+            alert(error.response.data.message);
           }
-        } catch (error) {
-          alert(error.response.data.message);
         }
       } else {
         alert("검색을 먼저 해주십시오");
@@ -270,26 +279,34 @@ const MainPage = () => {
             >
               {images.map((img, i) => (
                 <td key={i} onClick={(e) => clickTable(i, e)}>
-                  <button>{images[`${i}`].shooting_time}</button>
+                  <button>{img.shooting_time} 시</button>
                 </td>
               ))}
             </tr>
           </tbody>
         </table>
       </div>
-      <div className="result_image">
-        {images.length > 0 ? (
-          <>
-            {images[clickNum].url === null ? (
-              <></>
-            ) : (
-              <img src={images[clickNum].url} onClick={hi} alt="위성사진" />
-            )}
-          </>
-        ) : (
-          <></>
-        )}
-      </div>
+      {loading ? (
+        <Loader
+          type="spin"
+          color="#000080"
+          message={"위성영상을 불러오는 중입니다."}
+        />
+      ) : (
+        <div className="result_image">
+          {images.length > 0 ? (
+            <>
+              {images[clickNum].url === null ? (
+                <></>
+              ) : (
+                <img src={images[clickNum].url} onClick={hi} alt="위성사진" />
+              )}
+            </>
+          ) : (
+            <></>
+          )}
+        </div>
+      )}
     </div>
   );
 };
