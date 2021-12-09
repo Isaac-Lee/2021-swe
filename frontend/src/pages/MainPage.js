@@ -23,6 +23,7 @@ const MainPage = () => {
   const [images, setImages] = useState([]);
   const [clickNum, setClickNum] = useState(0);
   const [clickedImage, setClickedImage] = useState([]);
+  const [isSearch, setIsSearch] = useState(false);
 
   const keywordValue = ["AC", "AOD", "Chl"];
   const keywordList = ["대기보정", "에어로졸 광학 두께", "엽록소농도"];
@@ -67,6 +68,7 @@ const MainPage = () => {
   // 검색버튼
   const clickSearchBtn = async (e) => {
     if (window.localStorage.getItem("isAuth") === "true") {
+      setIsSearch(true);
       try {
         const response = await axios.post(
           `${USER_SERVER}/satellite/api/createImage`,
@@ -108,16 +110,20 @@ const MainPage = () => {
   // 저장 버튼 클릭 함수
   const clickSaveBtn = async (e) => {
     if (window.localStorage.getItem("isAuth") === "true") {
-      try {
-        const response = await axios.post(
-          `${USER_SERVER}/satellite/api/saveImage`,
-          clickedImage
-        );
-        if (response.data.success) {
-          alert("갤러리에 저장되었습니다.");
+      if (isSearch === "true") {
+        try {
+          const response = await axios.post(
+            `${USER_SERVER}/satellite/api/saveImage`,
+            clickedImage
+          );
+          if (response.data.success) {
+            alert("갤러리에 저장되었습니다.");
+          }
+        } catch (error) {
+          alert(error.response.data.message);
         }
-      } catch (error) {
-        alert(error.response.data.message);
+      } else {
+        alert("검색을 먼저 해주십시오");
       }
     } else {
       alert("로그인이 필요합니다.");

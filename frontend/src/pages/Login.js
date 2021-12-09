@@ -67,17 +67,24 @@ const Login = () => {
 
   const formSubmit = async (evt) => {
     evt.preventDefault();
-    try {
-      const response = await axios.post(`${USER_SERVER}/user/api/login`, info);
-      if (response.data.success) {
-        window.localStorage.setItem("isAuth", "true");
-        history.push(`/`);
-        alert("로그인 되었습니다.");
-      } else {
-        alert("로그인 실패하였습니다.");
+    if (info.id === "" || info.password === "") {
+      alert("아이디와 비밀번호를 다 입력하십시오.");
+    } else {
+      try {
+        const response = await axios.post(
+          `${USER_SERVER}/user/api/login`,
+          info
+        );
+        if (response.data.success) {
+          window.localStorage.setItem("isAuth", "true");
+          history.push(`/`);
+          alert("로그인 되었습니다.");
+        } else {
+          alert("로그인 실패하였습니다.");
+        }
+      } catch (error) {
+        alert(error.response.data.message);
       }
-    } catch (error) {
-      alert(error.response.data.message);
     }
   };
 
