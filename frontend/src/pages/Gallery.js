@@ -4,6 +4,7 @@ import { USER_SERVER } from "../config";
 import axios from "axios";
 import { useHistory } from "react-router";
 import "./Gallery.css";
+import { saveAs } from "file-saver";
 
 const Gallery = () => {
   const history = useHistory();
@@ -45,20 +46,14 @@ const Gallery = () => {
     }
   };
 
-  const makeATag = (url) => {
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `${url}.jpg`;
-    document.body.appendChild(a);
-    a.click();
-    setTimeout((_) => {
-      window.URL.revokeObjectURL(url);
-    }, 60000);
-    a.remove();
+  const makeATag = async (url) => {
+    console.log(url);
+    saveAs(url, `${url}.jpg`);
   };
 
   const clickDownloadBtn = () => {
     if (checkImgs.length > 0) {
+      console.log(checkImgs);
       checkImgs.forEach((url) => makeATag(url));
     } else {
       alert("체크된 것이 없습니다.");
@@ -96,7 +91,18 @@ const Gallery = () => {
     >
       <div className="nav">
         <Header />
-        <div className="tableArea">
+      </div>
+      <p id="galleryTitle">위성영상 갤러리</p>
+      <div className="buttons">
+        <div className="downloadBtn">
+          <button onClick={clickDownloadBtn}>저장</button>
+        </div>
+        <div className="deleteBtn">
+          <button onClick={clickDeleteBtn}>삭제</button>
+        </div>
+      </div>
+      <div className="tableArea">
+        <table>
           <thead>
             <tr>
               <td>선택</td>
@@ -106,8 +112,10 @@ const Gallery = () => {
             </tr>
           </thead>
           <tbody>
-            {imgList.length < 0 ? (
-              <></>
+            {imgList.length <= 0 ? (
+              <tr key={"nothing"}>
+                <td colSpan="5">저장된 위성영상이 없습니다.</td>
+              </tr>
             ) : (
               imgList.map((img, i) => (
                 <tr key={i}>
@@ -128,13 +136,7 @@ const Gallery = () => {
               ))
             )}
           </tbody>
-        </div>
-        <div>
-          <button onClick={clickDownloadBtn}>저장</button>
-        </div>
-        <div>
-          <button onClick={clickDeleteBtn}>삭제</button>
-        </div>
+        </table>
       </div>
     </div>
   );
