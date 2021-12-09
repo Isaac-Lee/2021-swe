@@ -1,22 +1,25 @@
 from itertools import repeat
-from flask import Flask, json, session, jsonify
-import boto3
+from flask import Flask, json, session, jsonify, make_response
 from flask_restx import Api, Resource, reqparse
 import pymysql
-from werkzeug.wrappers import response
 from db import create_db
 from utils import upload_file
 from flask_cors import CORS
 import os 
-import json 
+import json
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True) # 다른 포트번호에 대한 보안 제거
 api = Api(app)
 
+# secret_key 생성해야 세션 생성 가능 
+app.config['SESSION_TYPE'] = 'filesystem'
+app.secret_key = 'my super secret key'
+
 user_ns = api.namespace('user',description = '사용자 계정 API')
 image_ns = api.namespace('satellite',description = '위성 영상 데이터 API')
 
+key=""
 
 #imageNum, userid, keyword, shootingtime, shootingperiod, title, color, font, url
 join_parser = reqparse.RequestParser()
@@ -78,6 +81,7 @@ class user_login(Resource):
 
     @user_ns.expect(login_parser)
     def post(self):
+        global key
         args = join_parser.parse_args()
         input_id = args['id']
         input_pw = args['password']
@@ -94,6 +98,7 @@ class user_login(Resource):
         db.close()
         if name: # 로그인 성공 
             session['userId'] = input_id 
+            key = input_id
             session.modified = True
             data = {
                 "status": 201,
@@ -114,7 +119,11 @@ class user_login(Resource):
 @user_ns.route("/api/logout")
 class logout(Resource):
     def get(self):
+        global key
         session.pop('userId',None)
+        key =""
+        res = make_response("destroy Cookie!!")
+        res.set_cookie('user_id', '', expires=0)
         data = {
             "status": 200,
             "success":True,
@@ -138,7 +147,6 @@ class create_image(Resource):
     @image_ns.expect(image_parser)
     def post(self):
         args = image_parser.parse_args()
-        id = session.get('userId')
         keyword = args["keyword"]
         shooting_period = args["shooting_period"]
         shooting_time_start = args["shooting_time_start"]
@@ -184,7 +192,6 @@ class create_image(Resource):
                 url = None
 
             images.append({
-                "id":id,
                 "url": url,
                 "title": title,
                 "keyword": keyword,
@@ -217,7 +224,7 @@ class save_image(Resource):
     @image_ns.expect(save_parser)
     def post(self):
         args = save_parser.parse_args()
-        id = "song"
+        id = key
         url = args["url"]
         title = args["title"]
         shooting_period = args["shooting_period"]
@@ -248,7 +255,7 @@ class delete_image(Resource):
     @image_ns.expect(delete_parser)
     def delete(self):
         args = delete_parser.parse_args()
-        id = "song"
+        id = key
         url_list = args["url_list"]
         #url_list = ["test"] ## front에서 []로 와야함 
         result_url = []
@@ -281,14 +288,24 @@ class save_image(Resource):
         db = conn_db()
         cursor= db.cursor(pymysql.cursors.DictCursor)
         sql= "SELECT url,title,shootingperiod,shootingtime,keyword FROM image WHERE userId = %s"
-        cursor.execute(sql,"song")
-        check = json.dumps(cursor.fetchall())
+        cursor.execute(sql,key)
+        img_list = cursor.fetchall()
         db.close()
-
+        images = [] 
+        
+        for row in img_list:
+            images.append({
+            "keyword": row["keyword"],
+            "shooting_period": row["shootingperiod"][:4]+"/"+row["shootingperiod"][4:6]+"/"+row["shootingperiod"][6:8],
+            "shooting_time": row["shootingtime"],
+            "title": row["title"],
+            "url": row["url"]
+            })
+        
         data = {
             "status": 200,
             "success":True,
-            "images": json.loads(check),
+            "images": images,
             "message": "show user images"
         }
         return jsonify(data)
@@ -306,7 +323,4 @@ def conn_db():
 
 if __name__ == '__main__':
     create_db()
-    # secret_key 생성해야 세션 생성 가능 
-    app.config['SESSION_TYPE'] = 'filesystem'
-    app.secret_key = 'my super secret key'.encode('utf8')
-    app.run()
+    app.run(debug=True)

@@ -123,7 +123,7 @@ const Gallery = () => {
                   </td>
                   <td className={i}>{img.title}</td>
                   <td className={i}>{img.url}</td>
-                  <td className={i}>{img.shooting_peroid}</td>
+                  <td className={i}>{img.shooting_period}</td>
                 </tr>
               ))
             )}
