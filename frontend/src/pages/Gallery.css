@@ -21,7 +21,6 @@
 }
 
 .tableArea table {
-  border: 1px solid black;
   border-collapse: collapse;
   width: 100%;
   margin-top: 10px;
@@ -30,12 +29,22 @@
 
 .tableArea table thead {
   font-weight: bold;
-  background-color: lightgrey;
+  padding: 10px;
+  vertical-align: top;
+  color: #369;
+  border-bottom: 3px solid #036;
+  
 }
 
 .tableArea table tr {
   border: 1px solid black;
   line-height: 3rem;
+}
+.tableArea table tbody tr:hover { background-color: lightsteelblue; }
+
+.tableArea table tbody td {
+  vertical-align: top;
+  border-bottom: 1px solid #ccc;
 }
 
 .buttons {

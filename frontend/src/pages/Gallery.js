@@ -60,6 +60,10 @@ const Gallery = () => {
     }
   };
 
+  const showDetails = (url) => {
+    window.open(url, '_blank')
+  }
+
   const clickDeleteBtn = async () => {
     if (checkImgs.length > 0) {
       try {
@@ -130,7 +134,7 @@ const Gallery = () => {
                     />
                   </td>
                   <td className={i}>{img.title}</td>
-                  <td className={i}>{img.url}</td>
+                  <td className={i} onClick={() => window.open(img.url, '_blank')}>{img.url}</td>
                   <td className={i}>{img.shooting_period}</td>
                 </tr>
               ))
