@@ -129,7 +129,7 @@ const MainPage = () => {
               alert("갤러리에 저장되었습니다.");
             }
           } catch (error) {
-            alert(error.response.data.message);
+            alert("이미 저장한 영상입니다.");
           }
         }
       } else {
