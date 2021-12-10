@@ -159,7 +159,7 @@ class create_image(Resource):
         time_start = shooting_time_start.split(":")[0]
         time_end = shooting_time_end.split(":")[0]
         
-        day = int(shooting_period[8:10]) + 1
+        day = int(shooting_period[8:10])
         shooting_period = shooting_period[:4]+shooting_period[5:7]
         
         if day < 10:
