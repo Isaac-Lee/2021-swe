@@ -56,7 +56,7 @@ if __name__ == '__main__':
     fig.set_figwidth(7.5)
     ax.set_title(title, fontsize=font, pad=10)
     plt.xticks(fontsize=longitude_font)
-    plt.yticks(fontsize=longitude_font)
+    plt.yticks(fontsize=latitude_font)
     plt.imshow(data)
 
     ax.xaxis.set_label_position("top")
