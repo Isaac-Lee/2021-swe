@@ -60,10 +60,6 @@ const Gallery = () => {
     }
   };
 
-  const showDetails = (url) => {
-    window.open(url, '_blank')
-  }
-
   const clickDeleteBtn = async () => {
     if (checkImgs.length > 0) {
       try {
