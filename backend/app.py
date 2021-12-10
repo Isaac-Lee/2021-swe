@@ -1,26 +1,25 @@
 from itertools import repeat
-from os import path
-from re import escape
-from flask import Flask, json, jsonify
+from flask import Flask, json, session, jsonify, make_response
 from flask_restx import Api, Resource, reqparse
-from flask import session 
 import pymysql
-from werkzeug.wrappers import response
 from db import create_db
 from utils import upload_file
 from flask_cors import CORS
 import os 
-import json 
+import json
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True) # 다른 포트번호에 대한 보안 제거
 api = Api(app)
 
-userId = ''
+# secret_key 생성해야 세션 생성 가능 
+app.config['SESSION_TYPE'] = 'filesystem'
+app.secret_key = 'my super secret key'
 
 user_ns = api.namespace('user',description = '사용자 계정 API')
 image_ns = api.namespace('satellite',description = '위성 영상 데이터 API')
 
+key=""
 
 #imageNum, userid, keyword, shootingtime, shootingperiod, title, color, font, url
 join_parser = reqparse.RequestParser()
@@ -82,6 +81,7 @@ class user_login(Resource):
 
     @user_ns.expect(login_parser)
     def post(self):
+        global key
         args = join_parser.parse_args()
         input_id = args['id']
         input_pw = args['password']
@@ -91,25 +91,26 @@ class user_login(Resource):
         sql= "SELECT name FROM user WHERE userId = %s and userPw = %s;"
         cursor.execute(sql,(input_id,input_pw))
         check = cursor.fetchall()
-
+        name = ""
         for row in check:
             name = row['name']
 
         db.close()
-        if check: # 로그인 성공 
+        if name: # 로그인 성공 
             session['userId'] = input_id 
-            userId = '%s' % escape(session['userId'])
+            key = input_id
+            session.modified = True
             data = {
                 "status": 201,
                 "success":True,
-                "id": userId,
+                "id": session['userId'],
                 "message": "로그인 성공"
             }
             return jsonify(data)
         else: # 로그인 실패
             data = {
                 "status": 401,
-                "success":True,
+                "success":False,
                 "message": "로그인 실패"
             }
             return jsonify(data)
@@ -118,7 +119,11 @@ class user_login(Resource):
 @user_ns.route("/api/logout")
 class logout(Resource):
     def get(self):
+        global key
         session.pop('userId',None)
+        key =""
+        res = make_response("destroy Cookie!!")
+        res.set_cookie('user_id', '', expires=0)
         data = {
             "status": 200,
             "success":True,
@@ -154,8 +159,15 @@ class create_image(Resource):
         time_start = shooting_time_start.split(":")[0]
         time_end = shooting_time_end.split(":")[0]
         
-        split_period = shooting_period.split('/')
-        shooting_period = split_period[0]+split_period[1]+split_period[2]
+        day = int(shooting_period[8:10])
+        shooting_period = shooting_period[:4]+shooting_period[5:7]
+        
+        if day < 10:
+            day = "0"+ str(day)
+        else:
+            day = str(day)
+        shooting_period+=day
+        
         start = int(float(time_start))
         end = int(float(time_end))
         
@@ -203,7 +215,6 @@ class create_image(Resource):
 # 전시 영상 페이지에서 저장버튼 클릭한 경우
 @image_ns.route("/api/saveImage")
 class save_image(Resource):
-
     save_parser.add_argument("url")
     save_parser.add_argument("title")
     save_parser.add_argument("shooting_period")
@@ -211,10 +222,9 @@ class save_image(Resource):
     save_parser.add_argument("keyword")
 
     @image_ns.expect(save_parser)
-    #(userid(fk), url), title, shootingperiod, shootingtime,keyword
     def post(self):
         args = save_parser.parse_args()
-        id = userId
+        id = key
         url = args["url"]
         title = args["title"]
         shooting_period = args["shooting_period"]
@@ -245,13 +255,17 @@ class delete_image(Resource):
     @image_ns.expect(delete_parser)
     def delete(self):
         args = delete_parser.parse_args()
-        id = session['userId']
+        id = key
         url_list = args["url_list"]
-        url_list = ["test"] ## front에서 []로 와야함 
-        
+        #url_list = ["test"] ## front에서 []로 와야함 
+        result_url = []
+        urls = url_list.split(',')
+        for url in urls:
+            result_url.append(url)
+            
         db = conn_db()
         cursor= db.cursor(pymysql.cursors.DictCursor)
-        for url in url_list:
+        for url in result_url:
             sql= "DELETE FROM image WHERE userId=%s AND url=%s;"
             cursor.execute(sql,(id,url))
         db.commit()
@@ -274,15 +288,25 @@ class save_image(Resource):
         db = conn_db()
         cursor= db.cursor(pymysql.cursors.DictCursor)
         sql= "SELECT url,title,shootingperiod,shootingtime,keyword FROM image WHERE userId = %s"
-        cursor.execute(sql,(session['userId']))
-        check = json.dumps(cursor.fetchall())
+        cursor.execute(sql,key)
+        img_list = cursor.fetchall()
         db.close()
-
+        images = [] 
+        
+        for row in img_list:
+            images.append({
+            "keyword": row["keyword"],
+            "shooting_period": row["shootingperiod"][:4]+"/"+row["shootingperiod"][4:6]+"/"+row["shootingperiod"][6:8],
+            "shooting_time": row["shootingtime"],
+            "title": row["title"],
+            "url": row["url"]
+            })
+        
         data = {
             "status": 200,
-                "success":True,
-                "result": check,
-                "message": "show user images"
+            "success":True,
+            "images": images,
+            "message": "show user images"
         }
         return jsonify(data)
 
@@ -291,7 +315,7 @@ def conn_db():
     db = pymysql.connect(host='localhost',
                         port=3306,
                         user='root',
-                        passwd='3412',
+                        passwd='rlathddl',
                         db='satellite',
                         charset='utf8')
     return db
@@ -299,7 +323,4 @@ def conn_db():
 
 if __name__ == '__main__':
     create_db()
-    # secret_key 생성해야 세션 생성 가능 
-    app.config['SESSION_TYPE'] = 'memcached'
-    app.secret_key = 'my super secret key'.encode('utf8')
-    app.run()
+    app.run(debug=True)

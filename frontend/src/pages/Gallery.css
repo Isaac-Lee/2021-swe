@@ -1,3 +1,67 @@
-tr td {
+@font-face {
+  font-family: "yg-jalnan";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF00.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+#galleryTitle {
+  font-family: "yg-jalnan";
+  font-size: 45px;
+  margin-left: 10%;
+  padding-top: 50px;
+  margin-bottom: 10px;
+}
+
+.tableArea {
+  margin: 0 auto;
+  width: 75%;
+  font-size: 13px;
+}
+
+.tableArea table {
   border: 1px solid black;
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.tableArea table thead {
+  font-weight: bold;
+  background-color: lightgrey;
+}
+
+.tableArea table tr {
+  border: 1px solid black;
+  line-height: 3rem;
+}
+
+.buttons {
+  display: flex;
+  float: right;
+  margin-right: 13%;
+  margin-bottom: 20px;
+}
+
+.deleteBtn button {
+  background-color: #fefefe;
+  color: #000080;
+  border-color: #000080;
+  border-radius: 3px;
+  width: 70px;
+  height: 30px;
+  align-items: center;
+}
+
+.downloadBtn button {
+  margin-right: 30px;
+  background-color: #fefefe;
+  color: #000080;
+  border-color: #000080;
+  border-radius: 3px;
+  width: 70px;
+  height: 30px;
+  align-items: center;
 }
