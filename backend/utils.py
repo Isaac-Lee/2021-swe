@@ -37,7 +37,8 @@ def upload_file(file_path,num):
 
      # Upload the file
     try:
-        s3_client.upload_file(file_path, bucket, object_name)
+        s3_client.upload_file(file_path, bucket, object_name, ExtraArgs={'ContentType': "image/jpeg", 'ACL': "public-read"})
+ 
     except ClientError as e:
         logging.error(e)
         return None
