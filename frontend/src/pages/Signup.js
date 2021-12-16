@@ -90,6 +90,8 @@ const SignUp = () => {
       if (response.data.success) {
         history.push(`/login`);
         alert("회원가입 되었습니다.");
+      } else {
+        alert("중복되는 아이디가 존재합니다.");
       }
     } catch (error) {
       if (error.response.status === 403) {
