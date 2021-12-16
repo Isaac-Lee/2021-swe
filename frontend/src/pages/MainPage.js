@@ -70,6 +70,7 @@ const MainPage = () => {
   // 검색버튼
   const clickSearchBtn = async (e) => {
     setClickNum(0);
+    console.log(searchInfo.shooting_period);
     if (window.localStorage.getItem("isAuth") === "true") {
       setLoading(true);
       setIsSearch(true);
