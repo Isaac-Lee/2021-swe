@@ -80,10 +80,14 @@ const Login = () => {
           history.push(`/`);
           alert("로그인 되었습니다.");
         } else {
-          alert("로그인 실패하였습니다.");
+          if (response.data.message === "아이디중복") {
+            alert("회원가입 되어있지 않은 아이디입니다.");
+          } else {
+            alert("비밀번호가 맞지 않습니다.");
+          }
         }
       } catch (error) {
-        alert(error.response.data.message);
+        //alert(error.response.data.message);
       }
     }
   };

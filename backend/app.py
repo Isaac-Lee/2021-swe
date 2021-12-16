@@ -88,6 +88,23 @@ class user_login(Resource):
 
         db = conn_db()
         cursor= db.cursor(pymysql.cursors.DictCursor)
+
+        sql= "SELECT userId FROM user WHERE userId = %s;"
+        cursor.execute(sql,input_id)
+        check = cursor.fetchall()
+        name = ""
+
+        for row in check:
+            name = row['userId']
+        
+        if name is "":
+            data = {    
+                "status": 401,
+                "success":False,
+                "message": "아이디중복"
+            }
+            return jsonify(data)
+
         sql= "SELECT name FROM user WHERE userId = %s and userPw = %s;"
         cursor.execute(sql,(input_id,input_pw))
         check = cursor.fetchall()
@@ -315,7 +332,7 @@ def conn_db():
     db = pymysql.connect(host='localhost',
                         port=3306,
                         user='root',
-                        passwd='rlathddl',
+                        passwd='pw',
                         db='satellite',
                         charset='utf8')
     return db
