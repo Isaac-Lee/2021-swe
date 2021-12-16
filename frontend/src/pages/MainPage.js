@@ -109,8 +109,8 @@ const MainPage = () => {
 
   // 이미지 클릭했을 때 이미지의 src 불러오기
   const hi = (e) => {
-    alert(e.target.src);
-    console.log(clickedImage);
+    //alert(e.target.src);
+    // console.log(clickedImage);
   };
 
   // 저장 버튼 클릭 함수
