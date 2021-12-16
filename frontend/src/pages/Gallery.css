@@ -54,7 +54,7 @@
 .buttons {
   display: flex;
   float: right;
-  margin-right: 13%;
+  margin-right: 10%;
   margin-bottom: 20px;
 }
 
@@ -63,9 +63,10 @@
   color: #000080;
   border-color: #000080;
   border-radius: 3px;
-  width: 70px;
+  width: 80px;
   height: 30px;
   align-items: center;
+  margin-right: 50px;
 }
 
 .downloadBtn button {
@@ -74,7 +75,7 @@
   color: #000080;
   border-color: #000080;
   border-radius: 3px;
-  width: 70px;
+  width: 80px;
   height: 30px;
   align-items: center;
 }

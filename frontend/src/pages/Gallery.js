@@ -95,7 +95,7 @@ const Gallery = () => {
       <p id="galleryTitle">위성영상 갤러리</p>
       <div className="buttons">
         <div className="downloadBtn">
-          <button onClick={clickDownloadBtn}>저장</button>
+          <button onClick={clickDownloadBtn}>다운로드</button>
         </div>
         <div className="deleteBtn">
           <button onClick={clickDeleteBtn}>삭제</button>
@@ -130,7 +130,12 @@ const Gallery = () => {
                     />
                   </td>
                   <td className={i}>{img.title}</td>
-                  <td className={i} onClick={() => window.open(img.url, '_blank')}>{img.url}</td>
+                  <td
+                    className={i}
+                    onClick={() => window.open(img.url, "_blank")}
+                  >
+                    {img.url}
+                  </td>
                   <td className={i}>{img.shooting_period}</td>
                 </tr>
               ))
